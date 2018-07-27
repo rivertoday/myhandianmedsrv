@@ -1,0 +1,21 @@
+@charset "utf-8";
+body{opacity:0;}
+.bodyContentA{position:relative; overflow:hidden;}
+.bodyContentB{transform-origin:left top;-o-transform-origin:left top;-webkit-transform-origin:left top; margin-left:0px; margin-top:0px !important; margin-left:0px !important;}
+.fixedHeader{transform-origin:left top;-o-transform-origin:left top;-webkit-transform-origin:left top;}
+.fixedFooter{transform-origin:left bottom;-o-transform-origin:left bottom;-webkit-transform-origin:left bottom;}
+.fixedBox{position:fixed;}
+.fixedBox.left{transform-origin:left center;-o-transform-origin:left center;-webkit-transform-origin:left center;}
+.fixedBox.right{transform-origin:right center;-o-transform-origin:right center;-webkit-transform-origin:right center;}
+.fixedBox.top{transform-origin:center top;-o-transform-origin:center top;-webkit-transform-origin:center top;}
+.fixedBox.bottom{transform-origin:center bottom;-o-transform-origin:center bottom;-webkit-transform-origin:center bottom;}
+.fixedBox.left.top{transform-origin:left top;-o-transform-origin:left top;-webkit-transform-origin:left top;}
+.fixedBox.left.bottom{transform-origin:left bottom;-o-transform-origin:left bottom;-webkit-transform-origin:left bottom;}
+.fixedBox.right.top{transform-origin:right top;-o-transform-origin:right top;-webkit-transform-origin:right top;}
+.fixedBox.right.bottom{transform-origin:right bottom;-o-transform-origin:right bottom;-webkit-transform-origin:right bottom;}
+
+
+
+
+
+

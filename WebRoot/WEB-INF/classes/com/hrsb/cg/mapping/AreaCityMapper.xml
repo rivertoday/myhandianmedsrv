@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hrsb.cg.dao.AreaCityMapper" >
+  <resultMap id="BaseResultMap" type="com.hrsb.cg.model.AreaCity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="city_code" property="cityCode" jdbcType="VARCHAR" />
+    <result column="city_name" property="cityName" jdbcType="VARCHAR" />
+    <result column="prov_code" property="provCode" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, city_code, city_name, prov_code
+  </sql>
+  
+  <select id="selectAllCity" resultMap="BaseResultMap" parameterType="java.lang.String">
+  select * from AREA_CITY_LIST where PROV_CODE =#{provCode,jdbcType=VARCHAR} order by CITY_CODE asc
+  </select>
+  
+  <select id="getCityByCityCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+  select <include refid="Base_Column_List"></include>
+  from AREA_CITY_LIST where city_code=#{cityCode,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getCityByCityName" resultMap="BaseResultMap" parameterType="java.lang.String">
+  select <include refid="Base_Column_List"></include>
+  from AREA_CITY_LIST where city_name=${myCityName} and prov_code=${myProvCode}
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from area_city_list
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from area_city_list
+    where city_code = #{cityCode,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from area_city_list
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hrsb.cg.model.AreaCity" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into area_city_list (id, city_code, city_name, 
+      prov_code)
+    values (#{id,jdbcType=INTEGER}, #{cityCode,jdbcType=VARCHAR}, #{cityName,jdbcType=VARCHAR}, 
+      #{provCode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hrsb.cg.model.AreaCity" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into area_city_list
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="cityCode != null" >
+        city_code,
+      </if>
+      <if test="cityName != null" >
+        city_name,
+      </if>
+      <if test="provCode != null" >
+        prov_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=INTEGER},
+      <if test="cityCode != null" >
+        #{cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cityName != null" >
+        #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="provCode != null" >
+        #{provCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hrsb.cg.model.AreaCity" >
+    update area_city_list
+    <set >
+      <if test="cityCode != null" >
+        city_code = #{cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cityName != null" >
+        city_name = #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="provCode != null" >
+        prov_code = #{provCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hrsb.cg.model.AreaCity" >
+    update area_city_list
+    set city_code = #{cityCode,jdbcType=VARCHAR},
+      city_name = #{cityName,jdbcType=VARCHAR},
+      prov_code = #{provCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

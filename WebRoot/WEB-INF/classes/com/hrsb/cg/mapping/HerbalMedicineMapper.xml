@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hrsb.cg.dao.HerbalMedicineMapper" >
+  <resultMap id="BaseResultMap" type="com.hrsb.cg.model.HerbalMedicine" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="category" property="category" jdbcType="VARCHAR" />
+    <result column="herbmed_name" property="herbmed_name" jdbcType="VARCHAR" />
+	<result column="pic1" property="pic1" jdbcType="VARCHAR" />
+    <result column="pic2" property="pic2" jdbcType="VARCHAR" />
+    <result column="pic3" property="pic3" jdbcType="VARCHAR" />
+    <result column="spec1" property="spec1" jdbcType="VARCHAR" />
+    <result column="spec2" property="spec2" jdbcType="VARCHAR" />
+    <result column="spec3" property="spec3" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.hrsb.cg.model.HerbalMedicine" extends="BaseResultMap" >
+    <result column="introduction" property="introduction" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, category, herbmed_name, pic1, pic2, pic3, spec1, spec2, spec3
+  </sql>
+  <sql id="Blob_Column_List" >
+    introduction
+  </sql>
+  
+  <!-- <select id="selectAllPinYin" resultMap="BaseResultMap">
+  select distinct(category) from hd_zhongguoyaodian order by category asc;    
+  </select> -->
+  
+  <select id="selectByCategory" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  select 
+    <include refid="Base_Column_List" />
+    from hd_zhongguoyaodian where  
+    	lower(category) = #{cate,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectHerbalMedicine" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+  select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from hd_zhongguoyaodian where id = #{herbmedid,jdbcType=BIGINT}    
+  </select>
+  
+  <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  select 
+    <include refid="Base_Column_List" />
+    from hd_zhongguoyaodian where (spec3 is null or spec3='') and 
+    	herbmed_name like concat('%',#{hmkey,jdbcType=VARCHAR},'%')
+  </select>
+  
+  <select id="selectByPage" resultMap="ResultMapWithBLOBs" parameterType="com.hrsb.cg.util.Page">
+  select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from hd_zhongguoyaodian where (spec3 is null or spec3='')  
+    <if test="params.title!=null and params.title!='' ">
+    	and herbmed_name like concat('%','${params.title}','%')
+    </if>
+    
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.hrsb.cg.model.HerbalMedicine" keyProperty="id" useGeneratedKeys="true">
+    insert into hd_zhongguoyaodian
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="herbmed_name != null" >
+        herbmed_name,
+      </if>
+      <if test="introduction != null" >
+        introduction,
+      </if>
+      <if test="category != null" >
+        category,
+      </if>
+      <if test="pic1 != null" >
+        pic1,
+      </if>
+      <if test="pic2 != null" >
+        pic2,
+      </if>
+      <if test="pic3 != null" >
+        pic3,
+      </if>
+      <if test="spec1 != null" >
+        spec1,
+      </if>
+      <if test="spec2 != null" >
+        spec2,
+      </if>
+      <if test="spec3 != null" >
+        spec3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=BIGINT},
+      <if test="herbmed_name != null" >
+        #{herbmed_name,jdbcType=VARCHAR},
+      </if>
+      <if test="introduction != null" >
+        #{introduction,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="category != null" >
+        #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="pic1 != null" >
+        #{pic1,jdbcType=VARCHAR},
+      </if>
+      <if test="pic2 != null" >
+        #{pic2,jdbcType=VARCHAR},
+      </if>
+      <if test="pic3 != null" >
+        #{pic3,jdbcType=VARCHAR},
+      </if>
+      <if test="spec1 != null" >
+        #{spec1,jdbcType=VARCHAR},
+      </if>
+      <if test="spec2 != null" >
+        #{spec2,jdbcType=VARCHAR},
+      </if>
+      <if test="spec3 != null" >
+        #{spec3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hrsb.cg.model.HerbalMedicine" >
+    update hd_zhongguoyaodian
+    <set >
+      <if test="herbmed_name != null" >
+        herbmed_name = #{herbmed_name,jdbcType=VARCHAR},
+      </if>
+      <if test="introduction != null" >
+        introduction = #{introduction,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="category != null" >
+        category = #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="pic1 != null" >
+        pic1 = #{pic1,jdbcType=VARCHAR},
+      </if>
+      <if test="pic2 != null" >
+        pic2 = #{pic2,jdbcType=VARCHAR},
+      </if>
+      <if test="pic3 != null" >
+        pic3 = #{pic3,jdbcType=VARCHAR},
+      </if>
+      <if test="spec1 != null" >
+        spec1 = #{spec1,jdbcType=VARCHAR},
+      </if>
+      <if test="spec2 != null" >
+        spec2 = #{spec2,jdbcType=VARCHAR},
+      </if>
+      <if test="spec3 != null" >
+        spec3 = #{spec3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <update id="delLogic"  parameterType="java.lang.Long">
+  update hd_zhongguoyaodian set spec3 = '1' where id = #{herbalId}
+  </update>
+ 
+</mapper>

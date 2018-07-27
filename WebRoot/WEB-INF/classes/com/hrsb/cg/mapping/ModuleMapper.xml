@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hrsb.cg.dao.ModuleMapper" >
+  <resultMap id="BaseResultMap" type="com.hrsb.cg.model.Module" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="modulename" property="modulename" jdbcType="VARCHAR" />
+    <result column="parentid" property="parentid" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="operator" property="operator" jdbcType="INTEGER" />
+    <result column="operatime" property="operatime" jdbcType="TIMESTAMP" />
+    <result column="groupid" property="groupid" jdbcType="INTEGER"/>
+    <result column="modulecode" property="modulecode" jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, modulename, parentid, status, groupid, operator, operatime,modulecode
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from modules
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="findModuleByGroupId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  	select 
+    <include refid="Base_Column_List" />
+    from modules
+    where groupid = #{groupId,jdbcType=INTEGER}
+  </select>
+  <select id="getModuleByPage" resultMap="BaseResultMap" parameterType="com.hrsb.cg.util.Page">
+  	select 
+  	<include refid="Base_Column_List" />
+    from modules
+    <where>
+    	<if test="params.modulename!=null">
+    		modulename=#{params.modulename,jdbcType=VARCHAR}
+    	</if>
+    </where>
+    
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from modules
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hrsb.cg.model.Module" keyProperty="id" useGeneratedKeys="true">
+    insert into modules (id, modulename, parentid, 
+      status, groupid, operator, 
+      operatime,modulecode)
+    values (#{id,jdbcType=INTEGER}, #{modulename,jdbcType=VARCHAR}, #{parentid,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER}, #{groupid,jdbcType=INTEGER}, #{operator,jdbcType=INTEGER}, 
+      #{operatime,jdbcType=TIMESTAMP},#{modulecode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hrsb.cg.model.Module" keyProperty="id" useGeneratedKeys="true">
+    insert into modules
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="modulename != null" >
+        modulename,
+      </if>
+      <if test="parentid != null" >
+        parentid,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="groupid != null" >
+        groupid,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+      <if test="operatime != null" >
+        operatime,
+      </if>
+      <if test="modulecode!=null">
+      	modulecode,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=INTEGER},
+      <if test="modulename != null" >
+        #{modulename,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="groupid != null" >
+        #{groupid,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=INTEGER},
+      </if>
+      <if test="operatime != null" >
+        #{operatime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modulecode!=null">
+      	#{modulecode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hrsb.cg.model.Module" >
+    update modules
+    <set >
+      <if test="modulename != null" >
+        modulename = #{modulename,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        parentid = #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="groupid != null" >
+        groupid = #{groupid,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=INTEGER},
+      </if>
+      <if test="operatime != null" >
+        operatime = #{operatime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modulecode!=null">
+      	modulecode=#{modulecode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hrsb.cg.model.Module" >
+    update modules
+    set modulename = #{modulename,jdbcType=VARCHAR},
+      parentid = #{parentid,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      groupid = #{groupid,jdbcType=INTEGER},
+      operator = #{operator,jdbcType=INTEGER},
+      operatime = #{operatime,jdbcType=TIMESTAMP},
+      modulecode = #{modulecode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!-- 递归查询 -->
+  <select id="findAllModuleByChirld" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  	select <include refid="Base_Column_List" /> from modules where find_in_set(id,findModuleByChirldId(#{id}))
+  </select>
+  <select id="findAllModuleByParent" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  	select <include refid="Base_Column_List" /> from modules where find_in_set(id,findModuleByParentId(#{id}))
+  </select>
+  <select id="getAll"  resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" /> from modules where status=0
+  </select>
+  <delete id="deleteSome" parameterType="java.util.List">
+  	delete from modules
+    where id in <foreach collection="list" item="id" open="(" separator="," close=")">#{id}</foreach>
+  </delete>
+  <!-- 逆向递归 -->
+</mapper>

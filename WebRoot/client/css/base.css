@@ -1,0 +1,29 @@
+@charset "utf-8";
+/* CSS Document */
+/*css预设*/
+
+*{margin:0; padding:0;}/*将所有HTML元素的默认边距清0*/
+html,body{font-size:12px; font-family:"微软雅黑"; color:#000; background:#FFF;}/*对HTML元素中的字体、颜色、背景色进行初始设置*/
+ul li,ol li{list-style:none;}/*将列表标签的默认样式清除*/
+a{ text-decoration:none;outline:none; blr:expression(this.onFocus=this.blur());}/*将超链接的下划线去掉以及在ie6中点击出现的虚线框去掉*/
+img{border:none;}/*图片的默认边框去掉 */
+/*清楚浮动*/
+.clearfix:after{content:""; display:block; clear:both; height:0; line-height:0; visibility:hidden;}
+.clearfix{zoom:1;}/*解决ie6的兼容性问题*/
+
+.fl{float:left;}
+.fr{float:right;}
+
+
+
+.alertshowMask{background:rgba(0,0,0,0.5);height: 100%;left: 0;position: fixed;top: 0;width: 100%;z-index: 1000;}
+.alertshow{width:400px; height:120px;background:#fff;border-radius:10px; position:fixed; left:50%; top:50%; margin-top:-60px; z-index:1000;overflow: hidden;margin-left: -230px;}
+.alertshow p{margin:0px; padding:0px; width:100%; height:66px; line-height:66px; color:#333; font-size:13px; text-align:center;}
+.alertshow i{display:block; width:50%; left:0px; height:44px;line-height:44px;position:absolute;color:#fff; font-size:14px; background:#ae2b2b; border:none;bottom:0;text-align:center; cursor: pointer;font-style: normal;overflow: hidden;box-sizing: border-box;-webkit-box-sizing: border-box; border-right:1px solid #fff;}
+.alertshow i:last-child{left:auto;right:0px;border:0px;border-left:1px solid #fff;}
+.alertshowD i{width:100%;border:0px !important;}
+.alertshow{ margin-left:-200px; }
+
+
+
+

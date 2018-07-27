@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hrsb.cg.dao.DownloadRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.hrsb.cg.model.DownloadRecord" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="literature_id" property="literatureId" jdbcType="BIGINT" />
+    <result column="types" property="types" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="is_download" property="isDownload" jdbcType="TINYINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="spare1" property="spare1" jdbcType="VARCHAR" />
+    <result column="spare2" property="spare2" jdbcType="VARCHAR" />
+    <result column="spare3" property="spare3" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, user_id, literature_id, types, create_time, spare1, spare2, spare3, status, is_download
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from hd_download_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectCountByUserId" resultType="int" parameterType="java.lang.Long" >
+    select count(id) from hd_download_record
+    where user_id = #{userId}
+  </select>
+  
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="com.hrsb.cg.util.Page" >
+    select 
+    <include refid="Base_Column_List" />
+    from hd_download_record
+    where user_id = #{params.userId} and types = #{params.types} and status = 1
+  </select>
+  
+  <select id="selectByLiteratureIdAndUserId" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hd_download_record
+    where literature_id = #{0} and user_id = #{1} and types = #{2}
+  </select>
+  
+  <delete id="deleteByIdAndUserId">
+  	delete from hd_download_record where id = #{0} and user_id = #{1}
+  </delete>
+  
+  <insert id="insertSelective" parameterType="com.hrsb.cg.model.DownloadRecord" useGeneratedKeys="true" keyProperty="id">
+    insert into hd_download_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="literatureId != null" >
+        literature_id,
+      </if>
+      <if test="types != null" >
+        types,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isDownload != null" >
+        is_download,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="spare1 != null" >
+        spare1,
+      </if>
+      <if test="spare2 != null" >
+        spare2,
+      </if>
+      <if test="spare3 != null" >
+        spare3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=BIGINT},
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="literatureId != null" >
+        #{literatureId,jdbcType=BIGINT},
+      </if>
+      <if test="types != null" >
+        #{types,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDownload != null" >
+        #{isDownload,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="spare1 != null" >
+        #{spare1,jdbcType=VARCHAR},
+      </if>
+      <if test="spare2 != null" >
+        #{spare2,jdbcType=VARCHAR},
+      </if>
+      <if test="spare3 != null" >
+        #{spare3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.hrsb.cg.model.DownloadRecord" >
+    update hd_download_record
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="literatureId != null" >
+        literature_id = #{literatureId,jdbcType=BIGINT},
+      </if>
+      <if test="types != null" >
+        types = #{types,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="isDownload != null" >
+        is_download = #{isDownload,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="spare1 != null" >
+        spare1 = #{spare1,jdbcType=VARCHAR},
+      </if>
+      <if test="spare2 != null" >
+        spare2 = #{spare2,jdbcType=VARCHAR},
+      </if>
+      <if test="spare3 != null" >
+        spare3 = #{spare3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByIdAndUserId">
+  	update hd_download_record set status = #{2} where id = #{0} and user_id = #{1}
+  </update>
+</mapper>

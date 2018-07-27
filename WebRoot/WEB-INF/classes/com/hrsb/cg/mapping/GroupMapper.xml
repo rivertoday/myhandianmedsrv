@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hrsb.cg.dao.GroupMapper" >
+  <resultMap id="BaseResultMap" type="com.hrsb.cg.model.Group" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="groupname" property="groupname" jdbcType="VARCHAR" />
+    <result column="parentid" property="parentid" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="operator" property="operator" jdbcType="INTEGER" />
+    <result column="operatime" property="operatime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, groupname, parentid, status, operator, operatime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from groups
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getAll" resultMap="BaseResultMap" parameterType="com.hrsb.cg.model.Group">
+  	select 
+    <include refid="Base_Column_List" />
+    from groups
+    <where>
+     <if test="groupname != null" >
+        groupname = #{groupname,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        and parentid = #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        and status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null" >
+        and operator = #{operator,jdbcType=INTEGER},
+      </if>
+      <if test="operatime != null" >
+        and operatime = #{operatime,jdbcType=TIMESTAMP},
+      </if>
+      </where>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from groups
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hrsb.cg.model.Group" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into groups (id, groupname, parentid, 
+      status, operator, operatime
+      )
+    values (#{id,jdbcType=INTEGER}, #{groupname,jdbcType=VARCHAR}, #{parentid,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER}, #{operator,jdbcType=INTEGER}, #{operatime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hrsb.cg.model.Group" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into groups
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="groupname != null" >
+        groupname,
+      </if>
+      <if test="parentid != null" >
+        parentid,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+      <if test="operatime != null" >
+        operatime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=INTEGER},
+      <if test="groupname != null" >
+        #{groupname,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=INTEGER},
+      </if>
+      <if test="operatime != null" >
+        #{operatime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hrsb.cg.model.Group" >
+    update groups
+    <set >
+      <if test="groupname != null" >
+        groupname = #{groupname,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        parentid = #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=INTEGER},
+      </if>
+      <if test="operatime != null" >
+        operatime = #{operatime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hrsb.cg.model.Group" >
+    update groups
+    set groupname = #{groupname,jdbcType=VARCHAR},
+      parentid = #{parentid,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      operator = #{operator,jdbcType=INTEGER},
+      operatime = #{operatime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

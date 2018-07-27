@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hrsb.cg.dao.CollectionMapper" >
+  <resultMap id="BaseResultMap" type="com.hrsb.cg.model.Collection" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="literature_id" property="literatureId" jdbcType="BIGINT" />
+    <result column="types" property="types" jdbcType="TINYINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="spare1" property="spare1" jdbcType="VARCHAR" />
+    <result column="spare2" property="spare2" jdbcType="VARCHAR" />
+    <result column="spare3" property="spare3" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, user_id, literature_id, types, create_time, spare1, spare2, spare3
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from hd_collection
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="com.hrsb.cg.util.Page" >
+    select 
+    <include refid="Base_Column_List" />
+    from hd_collection
+    where user_id = #{params.userId,jdbcType=BIGINT} and types = #{params.types}
+  </select>
+  
+  <select id="selectByLiteratureIdAndUserId" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hd_collection
+    where literature_id = #{0} and user_id = #{1} and types = #{2}
+  </select>
+  
+  <delete id="deleteByIdAndUserId">
+    delete from hd_collection
+    where id = #{0} and user_id = #{1}
+  </delete>
+  
+  <insert id="insertSelective" parameterType="com.hrsb.cg.model.Collection" useGeneratedKeys="true" keyProperty="id">
+    insert into hd_collection
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="literatureId != null" >
+        literature_id,
+      </if>
+      <if test="types != null" >
+        types,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="spare1 != null" >
+        spare1,
+      </if>
+      <if test="spare2 != null" >
+        spare2,
+      </if>
+      <if test="spare3 != null" >
+        spare3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=BIGINT},
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="literatureId != null" >
+        #{literatureId,jdbcType=BIGINT},
+      </if>
+      <if test="types != null" >
+        #{types,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="spare1 != null" >
+        #{spare1,jdbcType=VARCHAR},
+      </if>
+      <if test="spare2 != null" >
+        #{spare2,jdbcType=VARCHAR},
+      </if>
+      <if test="spare3 != null" >
+        #{spare3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

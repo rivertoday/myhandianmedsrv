@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hrsb.cg.dao.UserDetailMapper">
+  <resultMap id="BaseResultMap" type="com.hrsb.cg.model.UserDetail">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="way" jdbcType="TINYINT" property="way" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="head_img" jdbcType="VARCHAR" property="headImg" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="country" jdbcType="VARCHAR" property="country" />
+    <result column="hospital_name" jdbcType="VARCHAR" property="hospitalName" />
+    <result column="hospital_grade" jdbcType="INTEGER" property="hospitalGrade" />
+    <result column="department_one" jdbcType="INTEGER" property="departmentOne" />
+    <result column="department_two" jdbcType="INTEGER" property="departmentTwo" />
+    <result column="professional" jdbcType="INTEGER" property="professional" />
+    <result column="forte" jdbcType="VARCHAR" property="forte" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="card_img" jdbcType="VARCHAR" property="cardImg" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="is_login_first" jdbcType="TINYINT" property="isLoginFirst" />
+    <result column="source" jdbcType="VARCHAR" property="source" />
+    <result column="download_types" property="downloadTypes" jdbcType="TINYINT" />
+    <result column="download_count" property="downloadCount" jdbcType="INTEGER" />
+    <result column="manager_id" jdbcType="INTEGER" property="managerId" />
+    <result column="operate_time" jdbcType="TIMESTAMP" property="operateTime" />
+    <result column="spare1" jdbcType="VARCHAR" property="spare1" />
+    <result column="spare2" jdbcType="VARCHAR" property="spare2" />
+    <result column="spare3" jdbcType="VARCHAR" property="spare3" />
+  </resultMap>
+   <resultMap extends="BaseResultMap" id="UserResultMap" type="com.hrsb.cg.model.UserDetail">
+  	<result column="frozen" jdbcType="TINYINT" property="frozen" />
+  	<result column="downloadTotal" jdbcType="INTEGER" property="downloadTotal" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, way, phone, head_img, nick_name, user_name, sex, province, city, country, 
+    hospital_name, hospital_grade, department_one, department_two, professional, forte, 
+    number, card_img, status, create_time, is_login_first, source, manager_id, operate_time, 
+    spare1, spare2, spare3, download_types, download_count
+  </sql>
+  <sql id="Special_Column_List">
+    id, user_id, phone, user_name, spare1
+  </sql>
+  
+  <select id="getPhone" resultMap="UserResultMap" parameterType="java.lang.String">
+  select 
+  <include refid="Base_Column_List"></include>
+  from hd_user_detail
+  where phone = #{phone} order by id desc limit 1
+  </select>
+  
+  <select id="selectAll" resultMap="UserResultMap">
+  	select usrd.*,usrl.frozen from hd_user_detail usrd right join hd_user_login usrl
+  	on usrd.user_id=usrl.id where 1=1
+  </select>
+  
+  <select id="selectByChoose" parameterType="java.util.List" resultMap="UserResultMap">
+  	select usrd.*,usrl.frozen from hd_user_detail usrd right join hd_user_login usrl
+  	on usrd.user_id=usrl.id where 1=1
+  	and usrl.id in
+  	<foreach collection="list" item="id" open="(" close=")" separator=",">
+  	${id}
+  	
+  	</foreach>
+  
+  </select>
+  
+   <select id="selectUserDetailByPage" parameterType="com.hrsb.cg.util.Page" resultMap="UserResultMap">
+  	select usrd.*,usrl.frozen from hd_user_detail usrd right join hd_user_login usrl
+  	on usrd.user_id=usrl.id where 1=1
+  	<if test="params.phone!=null and params.phone!='' ">
+  		and usrd.phone like concat('%','${params.phone}','%')
+  	</if>
+  	<if test="params.hospitalName!=null and params.hospitalName!='' ">
+  		and usrd.hospital_name = #{params.hospitalName}
+  	</if>
+  	<if test="params.province!=null and params.province!='' ">
+  		and usrd.province = #{params.province}
+  	</if>
+  	<if test="params.professional!=null and params.professional!='' ">
+  		and usrd.professional = #{params.professional}
+  	</if>
+  	<if test="params.source!=null and params.source!='' ">
+  		and usrd.source = #{params.source}
+  	</if>
+  	<if test="params.status!=null and params.status!='' ">
+  		and usrd.status = #{params.status}
+  	</if>
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hd_user_detail
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hd_user_detail
+    where user_id = #{userId}
+  </select>
+  
+<!--   Added by JIANG -->
+  <select id="selectByPhone" parameterType="java.lang.String" resultMap="UserResultMap">
+    select 
+    <include refid="Special_Column_List" />
+    from hd_user_detail
+    where phone = #{phone}
+  </select>
+<!--   Added end -->
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from hd_user_detail
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hrsb.cg.model.UserDetail">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into hd_user_detail (id, user_id, way, 
+      phone, head_img, nick_name, 
+      user_name, sex, province, 
+      city, country, hospital_name, 
+      hospital_grade, department_one, department_two, 
+      professional, forte, number, 
+      card_img, status, create_time, 
+      is_login_first, source, manager_id, 
+      operate_time, spare1, spare2, 
+      spare3)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{way,jdbcType=TINYINT}, 
+      #{phone,jdbcType=VARCHAR}, #{headImg,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, 
+      #{userName,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR}, #{hospitalName,jdbcType=VARCHAR}, 
+      #{hospitalGrade,jdbcType=INTEGER}, #{departmentOne,jdbcType=INTEGER}, #{departmentTwo,jdbcType=INTEGER}, 
+      #{professional,jdbcType=INTEGER}, #{forte,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, 
+      #{cardImg,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{isLoginFirst,jdbcType=TINYINT}, #{source,jdbcType=VARCHAR}, #{managerId,jdbcType=INTEGER}, 
+      #{operateTime,jdbcType=TIMESTAMP}, #{spare1,jdbcType=VARCHAR}, #{spare2,jdbcType=VARCHAR}, 
+      #{spare3,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hrsb.cg.model.UserDetail" keyProperty="id" useGeneratedKeys="true">
+    insert into hd_user_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      id,
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="way != null">
+        way,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="headImg != null">
+        head_img,
+      </if>
+      <if test="nickName != null">
+        nick_name,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="country != null">
+        country,
+      </if>
+      <if test="hospitalName != null">
+        hospital_name,
+      </if>
+      <if test="hospitalGrade != null">
+        hospital_grade,
+      </if>
+      <if test="departmentOne != null">
+        department_one,
+      </if>
+      <if test="departmentTwo != null">
+        department_two,
+      </if>
+      <if test="professional != null">
+        professional,
+      </if>
+      <if test="forte != null">
+        forte,
+      </if>
+      <if test="number != null">
+        number,
+      </if>
+      <if test="cardImg != null">
+        card_img,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="isLoginFirst != null">
+        is_login_first,
+      </if>
+      <if test="source != null">
+        source,
+      </if>
+      <if test="downloadTypes != null" >
+        download_types,
+      </if>
+      <if test="downloadCount != null" >
+        download_count,
+      </if>
+      <if test="managerId != null">
+        manager_id,
+      </if>
+      <if test="operateTime != null">
+        operate_time,
+      </if>
+      <if test="spare1 != null">
+        spare1,
+      </if>
+      <if test="spare2 != null">
+        spare2,
+      </if>
+      <if test="spare3 != null">
+        spare3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="way != null">
+        #{way,jdbcType=TINYINT},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="headImg != null">
+        #{headImg,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null">
+        #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="hospitalName != null">
+        #{hospitalName,jdbcType=VARCHAR},
+      </if>
+      <if test="hospitalGrade != null">
+        #{hospitalGrade,jdbcType=INTEGER},
+      </if>
+      <if test="departmentOne != null">
+        #{departmentOne,jdbcType=INTEGER},
+      </if>
+      <if test="departmentTwo != null">
+        #{departmentTwo,jdbcType=INTEGER},
+      </if>
+      <if test="professional != null">
+        #{professional,jdbcType=INTEGER},
+      </if>
+      <if test="forte != null">
+        #{forte,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="cardImg != null">
+        #{cardImg,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isLoginFirst != null">
+        #{isLoginFirst,jdbcType=TINYINT},
+      </if>
+      <if test="source != null">
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadTypes != null" >
+        #{downloadTypes,jdbcType=TINYINT},
+      </if>
+      <if test="downloadCount != null" >
+        #{downloadCount,jdbcType=INTEGER},
+      </if>
+      <if test="managerId != null">
+        #{managerId,jdbcType=INTEGER},
+      </if>
+      <if test="operateTime != null">
+        #{operateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="spare1 != null">
+        #{spare1,jdbcType=VARCHAR},
+      </if>
+      <if test="spare2 != null">
+        #{spare2,jdbcType=VARCHAR},
+      </if>
+      <if test="spare3 != null">
+        #{spare3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hrsb.cg.model.UserDetail">
+    update hd_user_detail
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="way != null">
+        way = #{way,jdbcType=TINYINT},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="headImg != null">
+        head_img = #{headImg,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null and nickName!='' ">
+        nick_name = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null and userName!='' ">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null">
+        country = #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="hospitalName != null">
+        hospital_name = #{hospitalName,jdbcType=VARCHAR},
+      </if>
+      <if test="hospitalGrade != null">
+        hospital_grade = #{hospitalGrade,jdbcType=INTEGER},
+      </if>
+      <if test="departmentOne != null">
+        department_one = #{departmentOne,jdbcType=INTEGER},
+      </if>
+      <if test="departmentTwo != null">
+        department_two = #{departmentTwo,jdbcType=INTEGER},
+      </if>
+      <if test="professional != null">
+        professional = #{professional,jdbcType=INTEGER},
+      </if>
+      <if test="forte != null">
+        forte = #{forte,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        number = #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="cardImg != null">
+        card_img = #{cardImg,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isLoginFirst != null">
+        is_login_first = #{isLoginFirst,jdbcType=TINYINT},
+      </if>
+      <if test="source != null">
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadTypes != null">
+        download_types = #{downloadTypes,jdbcType=TINYINT},
+      </if>
+      <if test="downloadCount != null">
+        download_count = #{downloadCount,jdbcType=INTEGER},
+      </if>
+      <if test="managerId != null">
+        manager_id = #{managerId,jdbcType=INTEGER},
+      </if>
+      <if test="operateTime != null">
+        operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="spare1 != null">
+        spare1 = #{spare1,jdbcType=VARCHAR},
+      </if>
+      <if test="spare2 != null">
+        spare2 = #{spare2,jdbcType=VARCHAR},
+      </if>
+      <if test="spare3 != null">
+        spare3 = #{spare3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hrsb.cg.model.UserDetail">
+    update hd_user_detail
+    set user_id = #{userId,jdbcType=BIGINT},
+      way = #{way,jdbcType=TINYINT},
+      phone = #{phone,jdbcType=VARCHAR},
+      head_img = #{headImg,jdbcType=VARCHAR},
+      nick_name = #{nickName,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      country = #{country,jdbcType=VARCHAR},
+      hospital_name = #{hospitalName,jdbcType=VARCHAR},
+      hospital_grade = #{hospitalGrade,jdbcType=INTEGER},
+      department_one = #{departmentOne,jdbcType=INTEGER},
+      department_two = #{departmentTwo,jdbcType=INTEGER},
+      professional = #{professional,jdbcType=INTEGER},
+      forte = #{forte,jdbcType=VARCHAR},
+      number = #{number,jdbcType=VARCHAR},
+      card_img = #{cardImg,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      is_login_first = #{isLoginFirst,jdbcType=TINYINT},
+      source = #{source,jdbcType=VARCHAR},
+      manager_id = #{managerId,jdbcType=INTEGER},
+      operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      spare1 = #{spare1,jdbcType=VARCHAR},
+      spare2 = #{spare2,jdbcType=VARCHAR},
+      spare3 = #{spare3,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

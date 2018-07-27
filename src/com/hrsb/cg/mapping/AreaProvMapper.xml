@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hrsb.cg.dao.AreaProvMapper" >
+  <resultMap id="BaseResultMap" type="com.hrsb.cg.model.AreaProv" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="prov_code" property="provCode" jdbcType="VARCHAR" />
+    <result column="prov_name" property="provName" jdbcType="VARCHAR" />
+    <result column="short_name" property="shortName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, prov_code, prov_name, short_name
+  </sql>
+  
+  <select id="getByProvCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select 
+    	<include refid="Base_Column_List" />
+    from area_prov_list
+    where prov_code = #{provCode,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getByProvName" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select 
+    	<include refid="Base_Column_List" />
+    from area_prov_list
+    where prov_name = #{provName,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findAllProv" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from area_prov_list
+  
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from area_prov_list
+    where id = #{id}
+  </select>
+  <!-- prov_code查询 -->
+  <select id="selectByCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from area_prov_list
+    where prov_code = #{provCode,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from area_prov_list
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hrsb.cg.model.AreaProv" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into area_prov_list (id, prov_code, prov_name, 
+      short_name)
+    values (#{id,jdbcType=INTEGER}, #{provCode,jdbcType=VARCHAR}, #{provName,jdbcType=VARCHAR}, 
+      #{shortName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hrsb.cg.model.AreaProv" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into area_prov_list
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="provCode != null" >
+        prov_code,
+      </if>
+      <if test="provName != null" >
+        prov_name,
+      </if>
+      <if test="shortName != null" >
+        short_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=INTEGER},
+      <if test="provCode != null" >
+        #{provCode,jdbcType=VARCHAR},
+      </if>
+      <if test="provName != null" >
+        #{provName,jdbcType=VARCHAR},
+      </if>
+      <if test="shortName != null" >
+        #{shortName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hrsb.cg.model.AreaProv" >
+    update area_prov_list
+    <set >
+      <if test="provCode != null" >
+        prov_code = #{provCode,jdbcType=VARCHAR},
+      </if>
+      <if test="provName != null" >
+        prov_name = #{provName,jdbcType=VARCHAR},
+      </if>
+      <if test="shortName != null" >
+        short_name = #{shortName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hrsb.cg.model.AreaProv" >
+    update area_prov_list
+    set prov_code = #{provCode,jdbcType=VARCHAR},
+      prov_name = #{provName,jdbcType=VARCHAR},
+      short_name = #{shortName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

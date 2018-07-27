@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <classPathEntry
+        location="D:\tomcat_handian\webapps\ROOT\WEB-INF\lib\mysql-connector-java-5.1.26.jar" />
+    <context id="mybatisDemoForMysql" targetRuntime="MyBatis3">
+        <!-- 控制注释 -->
+        <commentGenerator>
+            <!-- 是否去除所有自动生成的注释文件 -->
+            <property name="suppressAllComments" value="true" />
+            <!-- 是否去除所有自动生成的文件的时间戳，默认为false -->
+            <property name="suppressDate" value="true" />
+        </commentGenerator>
+        <!-- 控制数据库 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+            connectionURL="jdbc:mysql://192.168.1.151:3306/handian?characterEncoding=utf8"
+            userId="root" password="risenb2015@$" />
+
+        <javaTypeResolver>
+            <!-- 把jdbc中的decimal与numberic类型转化为integer类型 -->
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+        <!-- 数据库表对应的model -->
+        <javaModelGenerator targetPackage="com.hrsb.cg.model"
+            targetProject="sys-src">
+            <property name="enableSubPackages" value="false" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+        <!-- 控制Model的xmlMapper文件 -->
+        <sqlMapGenerator targetPackage="com.hrsb.cg.mapping"
+            targetProject="sys-src">
+            <property name="enableSubPackages" value="false" />
+        </sqlMapGenerator>
+        <!-- 控制mapper接口 -->
+        <javaClientGenerator targetPackage="com.hrsb.cg.dao"
+            type="XMLMAPPER" targetProject="sys-src">
+            <property name="enableSubPackages" value="true" />
+            <property name="methodNameCalculator" value="extended" />
+        </javaClientGenerator>
+        <!-- schema你的数据库，tableName表明，domainObjectName对应你的javabean类名，是否生成相应的example -->
+        <table schema="handian" tableName="hd_user_keyword" domainObjectName="UserKeyword"
+            enableCountByExample="false" enableUpdateByExample="false"
+            enableDeleteByExample="false" enableSelectByExample="false"
+            selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" />           
+        </table>
+    </context>
+</generatorConfiguration>

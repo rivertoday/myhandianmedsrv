@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hrsb.cg.dao.UploadFileMapper" >
+  <resultMap id="BaseResultMap" type="com.hrsb.cg.model.UploadFile" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="submitter" property="submitter" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="mail" property="mail" jdbcType="VARCHAR" />
+    <result column="downloadName" property="downloadName" jdbcType="VARCHAR" />
+    <result column="downloadUrl" property="downloadUrl" jdbcType="VARCHAR" />
+    <result column="operate_time" property="operate_time" jdbcType="TIMESTAMP" />
+    <result column="spec1" property="spec1" jdbcType="VARCHAR" />
+    <result column="spec2" property="spec2" jdbcType="VARCHAR" />
+    <result column="spec3" property="spec3" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, title, submitter, phone, mail,downloadName, downloadUrl,operate_time,spec1, spec2, spec3
+  </sql>
+  
+  <select id="selectUploadFile" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  select 
+    <include refid="Base_Column_List" />
+    from hd_uploadfile where id = #{upfileid,jdbcType=BIGINT}    
+  </select>
+  
+  <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  select 
+    <include refid="Base_Column_List" />
+    from hd_uploadfile where (spec3 is null or spec3='') and 
+    	title like concat('%',#{ufkey,jdbcType=VARCHAR},'%')  order by title
+  </select>
+  
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="com.hrsb.cg.util.Page">
+  select 
+    <include refid="Base_Column_List" />
+    from hd_uploadfile where (spec3 is null or spec3='') 
+    <if test="params.title!=null and params.title!='' ">
+    	and title like concat('%','${params.title}','%') 
+    </if>
+    order by operate_time desc
+    
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.hrsb.cg.model.UploadFile" keyProperty="id" useGeneratedKeys="true">
+    insert into hd_uploadfile
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="submitter != null" >
+        submitter,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="mail != null" >
+        mail,
+      </if>
+      <if test="downloadName != null">
+        downloadName,
+      </if>
+      <if test="downloadUrl != null">
+        downloadUrl,
+      </if>
+      <if test="operate_time != null">
+        operate_time,
+      </if>
+      <if test="spec1 != null" >
+        spec1,
+      </if>
+      <if test="spec2 != null" >
+        spec2,
+      </if>
+      <if test="spec3 != null" >
+        spec3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="submitter != null" >
+        #{submitter,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="mail != null" >
+        #{mail,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadName != null">
+        #{downloadName,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadUrl != null">
+        #{downloadUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="operate_time != null">
+      	#{operate_time,jdbcType=VARCHAR},
+      </if>
+      <if test="spec1 != null" >
+        #{spec1,jdbcType=VARCHAR},
+      </if>
+      <if test="spec2 != null" >
+        #{spec2,jdbcType=VARCHAR},
+      </if>
+      <if test="spec3 != null" >
+        #{spec3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+    
+  <update id="delLogic"  parameterType="java.lang.Long">
+  update hd_uploadfile set spec3 = '1' where id = #{ufId}
+  </update>
+ 
+</mapper>

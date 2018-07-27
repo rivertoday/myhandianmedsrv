@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hrsb.cg.dao.ManagerRoleMapper" >
+  <resultMap id="BaseResultMap" type="com.hrsb.cg.model.ManagerRole" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="manageid" property="manageid" jdbcType="INTEGER" />
+    <result column="roleid" property="roleid" jdbcType="INTEGER" />
+    <result column="operator" property="operator" jdbcType="INTEGER" />
+    <result column="operatime" property="operatime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, manageid, roleid, operator, operatime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from manager_role
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getRoleByManager"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  	select 
+    <include refid="Base_Column_List" />
+    from manager_role
+    where manageid = #{manageid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteMore" parameterType="java.util.List">
+  	delete from manager_role
+    where id in<foreach collection="list" open="(" separator="," close=")" item="id">#{id}</foreach>
+  </delete>
+  <delete id="deleteByManager" parameterType="java.lang.Integer">
+  	delete from manager_role where manageid = #{mid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from manager_role
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hrsb.cg.model.ManagerRole" keyProperty="id" useGeneratedKeys="true">
+    insert into manager_role (id, manageid, roleid, 
+      operator, operatime)
+    values (#{id,jdbcType=INTEGER}, #{manageid,jdbcType=INTEGER}, #{roleid,jdbcType=INTEGER}, 
+      #{operator,jdbcType=INTEGER}, #{operatime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hrsb.cg.model.ManagerRole" keyProperty="id" useGeneratedKeys="true">
+    insert into manager_role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="manageid != null" >
+        manageid,
+      </if>
+      <if test="roleid != null" >
+        roleid,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+      <if test="operatime != null" >
+        operatime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=INTEGER},
+      <if test="manageid != null" >
+        #{manageid,jdbcType=INTEGER},
+      </if>
+      <if test="roleid != null" >
+        #{roleid,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=INTEGER},
+      </if>
+      <if test="operatime != null" >
+        #{operatime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hrsb.cg.model.ManagerRole" >
+    update manager_role
+    <set >
+      <if test="manageid != null" >
+        manageid = #{manageid,jdbcType=INTEGER},
+      </if>
+      <if test="roleid != null" >
+        roleid = #{roleid,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=INTEGER},
+      </if>
+      <if test="operatime != null" >
+        operatime = #{operatime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hrsb.cg.model.ManagerRole" >
+    update manager_role
+    set manageid = #{manageid,jdbcType=INTEGER},
+      roleid = #{roleid,jdbcType=INTEGER},
+      operator = #{operator,jdbcType=INTEGER},
+      operatime = #{operatime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

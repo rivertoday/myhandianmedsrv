@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hrsb.cg.dao.ManagerMapper" >
+  <resultMap id="BaseResultMap" type="com.hrsb.cg.model.Manager" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="headimg" property="headimg" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="moduleId" property="moduleId" jdbcType="INTEGER"/>
+    <result column="operator" property="operator" jdbcType="INTEGER"/>
+    <result column="operatime" property="operatime" jdbcType="TIMESTAMP"/>
+    <result column="phone" property="phone" jdbcType="VARCHAR"/>
+    <result column="idkey" property="idkey" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+    <resultMap id="PremissionItem" type="com.hrsb.cg.dto.PremissionItem" extends="BaseResultMap" >
+   
+    <result column="rolename" property="rolename" jdbcType="VARCHAR"/>
+     <result column="title" property="premissionTitle" jdbcType="VARCHAR"/>
+      <result column="id" property="premissionId" jdbcType="INTEGER"/>
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, username, password, name, headimg, status, createtime,moduleId,operator,operatime,phone,idkey
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from manager
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getAll" resultMap="BaseResultMap" parameterType="java.util.List">
+  	select <include refid="Base_Column_List" /> from manager where id in<foreach collection="list" item="id" open="(" separator="," close=")">#{id}</foreach>
+  	order by operatime desc
+  </select>
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="com.hrsb.cg.util.Page">
+  	select <include refid="Base_Column_List" />
+    from manager
+    <where>
+    	<if test=" params.username!=null">
+    		name like CONCAT('%','${params.username}','%' ) or username like CONCAT('%','${params.username}','%' )
+    	</if>
+    </where>
+  <!--   <if test="username != null" >
+        and username = #{username,jdbcType=VARCHAR}
+      </if>
+      <if test="name != null" >
+        and name = #{name}
+      </if>
+      <if test="status != null" >
+        and status = #{status}
+      </if> -->
+  </select>
+  <select id="findManager" resultMap="BaseResultMap" parameterType="com.hrsb.cg.model.Manager">
+  	select <include refid="Base_Column_List" /> from manager where 1=1
+  	<if test="username != null" >
+        and username = #{username,jdbcType=VARCHAR}
+      </if>
+      <if test="name != null" >
+        and name = #{name}
+      </if>
+      <if test="status != null" >
+        and status = #{status}
+      </if>
+  </select>
+  
+   <select id="findManagerTwo" resultMap="BaseResultMap" parameterType="com.hrsb.cg.model.Manager">
+  	select <include refid="Base_Column_List" /> from manager where 1=1
+  	<if test="username != null" >
+        and username = #{username,jdbcType=VARCHAR}
+      </if>
+      <if test="name != null" >
+        and name = #{name}
+      </if>
+        and status = 0 
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from manager
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteManager" parameterType="java.util.List">
+  	delete from manager
+  	where id in<foreach collection="list" open="(" separator="," close=")" item="id">#{id}</foreach>
+  </delete>
+  <insert id="insert" parameterType="com.hrsb.cg.model.Manager" keyProperty="id" useGeneratedKeys="true">
+    insert into manager (id, username, password, 
+      name, headimg, status, 
+      createtime,moduleId,operator,operatime,phone,idkey)
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{headimg,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{createtime,jdbcType=TIMESTAMP},#{moduleId,jdbcType=INTEGER},#{operator,jdbcType=INTEGER}，#{operatime,jdbcType=TIMESTAMP},#{phone,jdbcType=VARCHAR},#{idkey,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hrsb.cg.model.Manager" keyProperty="id" useGeneratedKeys="true">
+    insert into manager
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="headimg != null" >
+        headimg,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="moduleId!=null">
+      	moduleId,
+      </if>
+      <if test="operator!=null">
+      	operator,
+      </if>
+      <if test="operatime!=null">
+      	operatime,
+      </if>
+      <if test="phone!=null">
+      	phone,
+      </if>
+      <if test="idkey!=null">
+      	idkey,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=INTEGER},
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="headimg != null" >
+        #{headimg,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="moduleId!=null">
+      	#{moduleId,jdbcType=INTEGER},
+      </if>
+      <if test="operator!=null">
+      	#{operator,jdbcType=INTEGER},
+      </if>
+      <if test="operatime!=null">
+      	#{operatime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="phone!=null">
+      	#{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="idkey!=null">
+      	#{idkey,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hrsb.cg.model.Manager" >
+    update manager
+    <set >
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="headimg != null" >
+        headimg = #{headimg,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="moduleId!=null">
+      	moduleId = #{moduleId,jdbcType=INTEGER},
+      </if>
+      <if test="operator!=null">
+      	operator = #{operator,jdbcType=INTEGER},
+      </if>
+      <if test="operatime!=null">
+      	operatime = #{operatime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="phone!=null">
+      	phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="idkey!=null">
+      	idkey = #{idkey,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hrsb.cg.model.Manager" >
+    update manager
+    set username = #{username,jdbcType=VARCHAR},
+      `password` = #{password,jdbcType=VARCHAR},
+      `name` = #{name,jdbcType=VARCHAR},
+      headimg = #{headimg,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      operator = #{operator,jdbcType=INTEGER},
+      operatime = #{operatime,jdbcType=TIMESTAMP},
+      phone = #{phone,jdbcType=VARCHAR},
+      idkey = #{idkey,jdbcType=VARCHAR},
+      moduleId = #{moduleId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="getPremission" resultMap="PremissionItem" parameterType="java.lang.String">
+  select man.username , roles.rolename,permission.title as premissionTitle ,permission.id from manager  man inner join manager_role managerrole on man.id=managerrole.manageid
+		inner join roles on managerrole.roleid=roles.id
+		inner join permission_role permissionRole on permissionRole.roleid=roles.id
+		inner join permissions permission on permissionRole.permissionid=permission.id where man.username=#{username}
+  </select>
+  
+</mapper>

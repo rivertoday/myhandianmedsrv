@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hrsb.cg.dao.RoleMapper" >
+  <resultMap id="BaseResultMap" type="com.hrsb.cg.model.Role" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="rolename" property="rolename" jdbcType="VARCHAR" />
+    <result column="parentid" property="parentid" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="moduleid" property="moduleid" jdbcType="INTEGER" />
+    <result column="operator" property="operator" jdbcType="INTEGER" />
+    <result column="operatime" property="operatime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, rolename, parentid, status, moduleid, operator, operatime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from roles
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getAll" resultMap="BaseResultMap" parameterType="com.hrsb.cg.model.Role">
+  	select 
+    <include refid="Base_Column_List" />
+    from roles
+    where 1=1
+    <if test="rolename != null" >
+       and rolename like  CONCAT('%','${rolename}','%' )
+      </if>
+      <if test="parentid != null" >
+       and  parentid = #{parentid}
+      </if>
+      <if test="status != null" >
+       and  status = #{status}
+      </if>
+      <if test="moduleid != null" >
+       and  moduleid = #{moduleid}
+      </if>
+      <if test="operator != null" >
+       and  operator = #{operator}
+      </if>
+      <if test="operatime != null" >
+       and  operatime = #{operatime}
+      </if>
+  </select>
+  <delete id="deleteRoleByIds" parameterType="java.util.List">
+  	delete from roles
+    where id in <foreach collection="list" item="id" open="(" separator="," close=")">#{id}</foreach>
+  </delete>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from roles
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hrsb.cg.model.Role" useGeneratedKeys="true" keyProperty="id">
+    insert into roles (id, rolename, parentid, 
+      status, moduleid, operator, 
+      operatime)
+    values (#{id,jdbcType=INTEGER}, #{rolename,jdbcType=VARCHAR}, #{parentid,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER}, #{moduleid,jdbcType=INTEGER}, #{operator,jdbcType=INTEGER}, 
+      #{operatime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hrsb.cg.model.Role"  useGeneratedKeys="true" keyProperty="id">
+    insert into roles
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="rolename != null" >
+        rolename,
+      </if>
+      <if test="parentid != null" >
+        parentid,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="moduleid != null" >
+        moduleid,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+      <if test="operatime != null" >
+        operatime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=INTEGER},
+      <if test="rolename != null" >
+        #{rolename,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="moduleid != null" >
+        #{moduleid,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=INTEGER},
+      </if>
+      <if test="operatime != null" >
+        #{operatime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hrsb.cg.model.Role" >
+    update roles
+    <set >
+      <if test="rolename != null" >
+        rolename = #{rolename,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        parentid = #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="moduleid != null" >
+        moduleid = #{moduleid,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=INTEGER},
+      </if>
+      <if test="operatime != null" >
+        operatime = #{operatime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hrsb.cg.model.Role" >
+    update roles
+    set rolename = #{rolename,jdbcType=VARCHAR},
+      parentid = #{parentid,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      moduleid = #{moduleid,jdbcType=INTEGER},
+      operator = #{operator,jdbcType=INTEGER},
+      operatime = #{operatime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hrsb.cg.dao.MenuMapper" >
+  <resultMap id="BaseResultMap" type="com.hrsb.cg.model.Menu" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="logoimg" property="logoimg" jdbcType="VARCHAR" />
+    <result column="logoHimg" property="logohimg" jdbcType="VARCHAR" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="isshow" property="isshow" jdbcType="INTEGER" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="linkurl" property="linkurl" jdbcType="VARCHAR" />
+    <result column="pagekeys" property="pagekeys" jdbcType="VARCHAR" />
+    <result column="pagedescription" property="pagedescription" jdbcType="VARCHAR" />
+    <result column="parentid" property="parentid" jdbcType="INTEGER" />
+    <result column="isindex" property="isindex" jdbcType="INTEGER" />
+    <result column="istop" property="istop" jdbcType="INTEGER" />
+    <result column="isrecommend" property="isrecommend" jdbcType="INTEGER" />
+    <result column="imgalt" property="imgalt" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+    <result column="description" property="description" jdbcType="LONGVARCHAR" />
+    <result column="standbyfield1" property="standbyfield1" jdbcType="VARCHAR"/>
+    <result column="standbyfield2" property="standbyfield2" jdbcType="VARCHAR"/>
+    <result column="standbyfield3" property="standbyfield3" jdbcType="VARCHAR"/>
+    <result column="standbyfield4" property="standbyfield4" jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, title, logoimg, logoHimg, createtime, isshow, sort, linkurl, pagekeys, pagedescription, 
+    parentid, isindex, istop, isrecommend, imgalt, content, description,standbyfield1,standbyfield2,standbyfield3,standbyfield4
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from menus
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from menus
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hrsb.cg.model.Menu" useGeneratedKeys="true" keyProperty="id">
+    insert into menus (id, title, logoimg, 
+      logoHimg, createtime, isshow, 
+      sort, linkurl, pagekeys, 
+      pagedescription, parentid, isindex, 
+      istop, isrecommend, imgalt, 
+      content, description,standbyfield1,standbyfield2,standbyfield3,standbyfield4)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{logoimg,jdbcType=VARCHAR}, 
+      #{logohimg,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{isshow,jdbcType=INTEGER}, 
+      #{sort,jdbcType=INTEGER}, #{linkurl,jdbcType=VARCHAR}, #{pagekeys,jdbcType=VARCHAR}, 
+      #{pagedescription,jdbcType=VARCHAR}, #{parentid,jdbcType=INTEGER}, #{isindex,jdbcType=INTEGER}, 
+      #{istop,jdbcType=INTEGER}, #{isrecommend,jdbcType=INTEGER}, #{imgalt,jdbcType=VARCHAR}, 
+      #{content,jdbcType=LONGVARCHAR}, #{description,jdbcType=LONGVARCHAR},
+      #{standbyfield1,jdbcType=VARCHAR},#{standbyfield2,jdbcType=VARCHAR},#{standbyfield3,jdbcType=VARCHAR},#{standbyfield4,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hrsb.cg.model.Menu" keyProperty="id" useGeneratedKeys="true">
+    insert into menus
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="logoimg != null" >
+        logoimg,
+      </if>
+      <if test="logohimg != null" >
+        logoHimg,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="isshow != null" >
+        isshow,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="linkurl != null" >
+        linkurl,
+      </if>
+      <if test="pagekeys != null" >
+        pagekeys,
+      </if>
+      <if test="pagedescription != null" >
+        pagedescription,
+      </if>
+      <if test="parentid != null" >
+        parentid,
+      </if>
+      <if test="isindex != null" >
+        isindex,
+      </if>
+      <if test="istop != null" >
+        istop,
+      </if>
+      <if test="isrecommend != null" >
+        isrecommend,
+      </if>
+      <if test="imgalt != null" >
+        imgalt,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="standbyfield1 != null" >
+        standbyfield1,
+      </if>
+      <if test="standbyfield2 != null" >
+        standbyfield2,
+      </if>
+      <if test="standbyfield3 != null" >
+        standbyfield3,
+      </if>
+      <if test="standbyfield4 != null" >
+        standbyfield4,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=INTEGER},
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="logoimg != null" >
+        #{logoimg,jdbcType=VARCHAR},
+      </if>
+      <if test="logohimg != null" >
+        #{logohimg,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isshow != null" >
+        #{isshow,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="linkurl != null" >
+        #{linkurl,jdbcType=VARCHAR},
+      </if>
+      <if test="pagekeys != null" >
+        #{pagekeys,jdbcType=VARCHAR},
+      </if>
+      <if test="pagedescription != null" >
+        #{pagedescription,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="isindex != null" >
+        #{isindex,jdbcType=INTEGER},
+      </if>
+      <if test="istop != null" >
+        #{istop,jdbcType=INTEGER},
+      </if>
+      <if test="isrecommend != null" >
+        #{isrecommend,jdbcType=INTEGER},
+      </if>
+      <if test="imgalt != null" >
+        #{imgalt,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="standbyfield1 != null" >
+        #{standbyfield1,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyfield2 != null" >
+        #{standbyfield2,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyfield3 != null" >
+        #{standbyfield3,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyfield4 != null" >
+        #{standbyfield4,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hrsb.cg.model.Menu" >
+    update menus
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="logoimg != null" >
+        logoimg = #{logoimg,jdbcType=VARCHAR},
+      </if>
+      <if test="logohimg != null" >
+        logoHimg = #{logohimg,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isshow != null" >
+        isshow = #{isshow,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="linkurl != null" >
+        linkurl = #{linkurl,jdbcType=VARCHAR},
+      </if>
+      <if test="pagekeys != null" >
+        pagekeys = #{pagekeys,jdbcType=VARCHAR},
+      </if>
+      <if test="pagedescription != null" >
+        pagedescription = #{pagedescription,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        parentid = #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="isindex != null" >
+        isindex = #{isindex,jdbcType=INTEGER},
+      </if>
+      <if test="istop != null" >
+        istop = #{istop,jdbcType=INTEGER},
+      </if>
+      <if test="isrecommend != null" >
+        isrecommend = #{isrecommend,jdbcType=INTEGER},
+      </if>
+      <if test="imgalt != null" >
+        imgalt = #{imgalt,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="standbyfield1 != null" >
+       standbyfield1= #{standbyfield1,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyfield2 != null" >
+       standbyfield2= #{standbyfield2,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyfield3 != null" >
+       standbyfield3 =  #{standbyfield3,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyfield4 != null" >
+       standbyfield4= #{standbyfield4,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hrsb.cg.model.Menu" >
+    update menus
+    set title = #{title,jdbcType=VARCHAR},
+      logoimg = #{logoimg,jdbcType=VARCHAR},
+      logoHimg = #{logohimg,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      isshow = #{isshow,jdbcType=INTEGER},
+      sort = #{sort,jdbcType=INTEGER},
+      linkurl = #{linkurl,jdbcType=VARCHAR},
+      pagekeys = #{pagekeys,jdbcType=VARCHAR},
+      pagedescription = #{pagedescription,jdbcType=VARCHAR},
+      parentid = #{parentid,jdbcType=INTEGER},
+      isindex = #{isindex,jdbcType=INTEGER},
+      istop = #{istop,jdbcType=INTEGER},
+      isrecommend = #{isrecommend,jdbcType=INTEGER},
+      imgalt = #{imgalt,jdbcType=VARCHAR},
+      content = #{content,jdbcType=LONGVARCHAR},
+      description = #{description,jdbcType=LONGVARCHAR},
+      standbyfield4 = #{standbyfield4,jdbcType=VARCHAR},
+      standbyfield3 = #{standbyfield3,jdbcType=VARCHAR},
+      standbyfield2 = #{standbyfield2,jdbcType=VARCHAR},
+      standbyfield1 = #{standbyfield1,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

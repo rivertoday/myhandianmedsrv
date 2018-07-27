@@ -1,0 +1,18 @@
+// JavaScript Document
+$(document).ready(function() {
+function creatEtg(tag){return document.createElement(tag);};
+jQuery.fn.outerHTML = function(s) {return (s) ? this.before(s).remove() : $("<Hill_man>").append(this.eq(0).clone()).html();}
+//////单选//////
+$("input.yradio").each(function(index, element) {var danuxna=creatEtg("yradio");$(this).after(danuxna);
+$(this).removeClass("yradio");if($(this).attr("class")!=""){$(danuxna).attr("class",$(this).attr("class"));
+}$(this).removeAttr("class");$(danuxna).append($(this).outerHTML());$(this).remove();});function yradio_for(){$("yradio input").each(function(index, element) {if($(this).is(":checked")){$(this).parents("yradio").addClass("checked");}else{$(this).parents("yradio").removeClass("checked");}});};	 	yradio_for();$("yradio input").click(function(e){if(e.stopPropagation) {e.stopPropagation();}else{e.cancelBubble = true;} });$("yradio").click(function(){$(this).find("input").trigger("click");yradio_for()});
+////多选////
+$("input.ycheckbox").each(function(index, element) {var danuxna=creatEtg("ycheckbox");$(this).after(danuxna);$(this).removeClass("ycheckbox");if($(this).attr("class")!=""){$(danuxna).attr("class",$(this).attr("class"));}$(this).removeAttr("class");
+$(danuxna).append($(this).outerHTML());$(this).remove();});function ycheckbox_for(){$("ycheckbox input").each(function(index, element) {if($(this).is(":checked")){$(this).parents("ycheckbox").addClass("checked");}else{$(this).parents("ycheckbox").removeClass("checked");}});};ycheckbox_for();$("ycheckbox input").click(function(e){if(e.stopPropagation) {e.stopPropagation();}else{e.cancelBubble = true;} });$("ycheckbox").click(function(){$(this).find("input").trigger("click");ycheckbox_for()});
+/////下拉/////
+$("select.yselect").each(function(index, element) {var danuxna=creatEtg("yselect");$(this).after(danuxna);$(this).removeClass("yselect");if($(this).attr("class")!=""){$(danuxna).attr("class",$(this).attr("class"));
+}$(this).removeAttr("class");$(danuxna).append($(this).outerHTML());$(this).remove();});$("yselect").each(function(index, element) {var danuxna=creatEtg("yval"),selectP=creatEtg("yselp");$(this).append(danuxna).append(selectP);});$("yselect yval").click(function(){var prentA=$(this).parents("yselect");if(prentA.hasClass("mobile")){return;};prentA.find("yselp").show();prentA.find("yselp").html("");prentA.find("option").each(function(index, element) {;var opchisd=creatEtg("yoption"); prentA.find("yselp").append(opchisd);$(opchisd).text($(this).text());$(opchisd).click(function(){var pahsd=$(this).parents("yselect");var tetx=$(this).text();pahsd.find("yval").text($(this).text());pahsd.find("option").each(function(index, element) {if($(this).text()==tetx){pahsd.find("select").val($(this).val());pahsd.find("select").change();}});prentA.find("yselp").hide();}) });});$("yselp").hide();selectrChagr();function selectrChagr(){$("yselect yval").each(function(index, element) {var ptshd=$(this).parents("yselect");var shitsds=$(this);ptshd.find("option").each(function(index, element) {if($(this).val()==ptshd.find("select").val()){shitsds.text($(this).text());}});});};$("yselect").hover(function(){},function(){$(this).find("yoption").unbind("click").remove();$(this).find("yselp").hide()})
+function IsPC() {  var userAgentInfo = navigator.userAgent;  var Agents = new Array("Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod");var flag = true; for (var v = 0; v < Agents.length; v++) {if (userAgentInfo.indexOf(Agents[v]) > 0) { flag = false; break; }  }  return flag; } 
+if(!IsPC()){$("yselect").addClass("mobile");}
+$("yselect select").change(selectrChagr);	
+});

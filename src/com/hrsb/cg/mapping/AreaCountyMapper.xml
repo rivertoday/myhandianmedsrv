@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hrsb.cg.dao.AreaCountyMapper" >
+  <resultMap id="BaseResultMap" type="com.hrsb.cg.model.AreaCounty" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="county_code" property="countyCode" jdbcType="VARCHAR" />
+    <result column="county_name" property="countyName" jdbcType="VARCHAR" />
+    <result column="prov_code" property="provCode" jdbcType="VARCHAR" />
+    <result column="city_code" property="cityCode" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, county_code, county_name, prov_code, city_code
+  </sql>
+  
+  <select id="getCountyByCountyCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+  
+    select <include refid="Base_Column_List"></include> 
+    from AREA_COUNTY_LIST 
+    where county_code =#{countyCode,jdbcType=VARCHAR}
+  
+  </select>
+  
+  <select id="getCountyByCountyName" resultMap="BaseResultMap" parameterType="java.lang.String">
+  
+    select <include refid="Base_Column_List"></include> 
+    from AREA_COUNTY_LIST 
+    where county_code =#{myCountyName,jdbcType=VARCHAR} and prov_code=#{myProvCode,jdbcType=VARCHAR} and city_code=#{myCityCode,jdbcType=VARCHAR}
+  
+  </select>
+  
+   <select id="selectAllCounty" resultMap="BaseResultMap" parameterType="java.lang.String">
+  select <include refid="Base_Column_List"></include> from AREA_COUNTY_LIST where CITY_CODE =#{cityCode,jdbcType=VARCHAR} order by COUNTY_CODE asc
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from area_county_list
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from area_county_list
+    where county_code = #{countyCode,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from area_county_list
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hrsb.cg.model.AreaCounty" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into area_county_list (id, county_code, county_name, 
+      prov_code, city_code)
+    values (#{id,jdbcType=INTEGER}, #{countyCode,jdbcType=VARCHAR}, #{countyName,jdbcType=VARCHAR}, 
+      #{provCode,jdbcType=VARCHAR}, #{cityCode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hrsb.cg.model.AreaCounty" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into area_county_list
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="countyCode != null" >
+        county_code,
+      </if>
+      <if test="countyName != null" >
+        county_name,
+      </if>
+      <if test="provCode != null" >
+        prov_code,
+      </if>
+      <if test="cityCode != null" >
+        city_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=INTEGER},
+      <if test="countyCode != null" >
+        #{countyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="countyName != null" >
+        #{countyName,jdbcType=VARCHAR},
+      </if>
+      <if test="provCode != null" >
+        #{provCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCode != null" >
+        #{cityCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hrsb.cg.model.AreaCounty" >
+    update area_county_list
+    <set >
+      <if test="countyCode != null" >
+        county_code = #{countyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="countyName != null" >
+        county_name = #{countyName,jdbcType=VARCHAR},
+      </if>
+      <if test="provCode != null" >
+        prov_code = #{provCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCode != null" >
+        city_code = #{cityCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hrsb.cg.model.AreaCounty" >
+    update area_county_list
+    set county_code = #{countyCode,jdbcType=VARCHAR},
+      county_name = #{countyName,jdbcType=VARCHAR},
+      prov_code = #{provCode,jdbcType=VARCHAR},
+      city_code = #{cityCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

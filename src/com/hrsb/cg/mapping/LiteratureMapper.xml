@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hrsb.cg.dao.LiteratureMapper" >
+  <resultMap id="BaseResultMap" type="com.hrsb.cg.model.Literature" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="article_id" property="articleId" jdbcType="VARCHAR" />
+    <result column="image" property="image" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="abstracts" property="abstracts" jdbcType="LONGVARCHAR" />
+    <result column="creator" property="creator" jdbcType="LONGVARCHAR" />
+    <result column="organization" property="organization" jdbcType="LONGVARCHAR" />
+    <result column="source" property="source" jdbcType="LONGVARCHAR" />
+    <result column="year" property="year" jdbcType="INTEGER" />
+    <result column="volume" property="volume" jdbcType="VARCHAR" />
+    <result column="issue" property="issue" jdbcType="VARCHAR" />
+    <result column="keywords" property="keywords" jdbcType="LONGVARCHAR" />
+    <result column="page" property="page" jdbcType="VARCHAR" />
+    <result column="has_original_doc" property="hasOriginalDoc" jdbcType="TINYINT" />
+    <result column="conference" property="conference" jdbcType="LONGVARCHAR" />
+    <result column="conference_date" property="conferenceDate" jdbcType="LONGVARCHAR" />
+    <result column="conference_locus" property="conferenceLocus" jdbcType="LONGVARCHAR" />
+    <result column="convener" property="convener" jdbcType="LONGVARCHAR" />
+    <result column="author_subject" property="authorSubject" jdbcType="LONGVARCHAR" />
+    <result column="degree" property="degree" jdbcType="LONGVARCHAR" />
+    <result column="teacher_name" property="teacherName" jdbcType="LONGVARCHAR" />
+    <result column="types" property="types" jdbcType="VARCHAR" />
+    <result column="download_url" property="downloadUrl" jdbcType="VARCHAR" />
+    <result column="download_count" property="downloadCount" jdbcType="INTEGER" />
+    <result column="click_count" property="clickCount" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="manager_id" property="managerId" jdbcType="INTEGER" />
+    <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP" />
+    <result column="spare1" property="spare1" jdbcType="VARCHAR" />
+    <result column="spare2" property="spare2" jdbcType="VARCHAR" />
+    <result column="spare3" property="spare3" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, article_id, image, title, abstracts, creator, organization, source, year, volume, 
+    issue, keywords, page, has_original_doc, conference, conference_date, conference_locus, 
+    convener, author_subject, degree, teacher_name, types, download_url, download_count,
+    click_count,create_time, manager_id, operate_time, spare1, spare2, spare3
+  </sql>
+  
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="com.hrsb.cg.util.Page">
+   select 
+    <include refid="Base_Column_List" />
+    from hd_literature
+    <where>
+    	<if test="params.title != null and params.title != ''">
+    		and title like concat("%", #{params.title}, "%")
+    	</if>
+    </where>
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from hd_literature
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByArticleId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from hd_literature
+    where article_id = #{articleId} 
+    order by article_id desc limit 1
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from hd_literature
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hrsb.cg.model.Literature" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="BEFORE" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into hd_literature (id, article_id, image, 
+      title, abstracts, creator, 
+      organization, source, year, 
+      volume, issue, keywords, 
+      page, has_original_doc, conference, 
+      conference_date, conference_locus, convener, 
+      author_subject, degree, teacher_name, 
+      types, download_url, download_count, 
+      create_time, manager_id, operate_time, 
+      spare1, spare2, spare3
+      )
+    values (#{id,jdbcType=BIGINT}, #{articleId,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, 
+      #{title,jdbcType=VARCHAR}, #{abstracts,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{organization,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR}, #{year,jdbcType=INTEGER}, 
+      #{volume,jdbcType=VARCHAR}, #{issue,jdbcType=VARCHAR}, #{keywords,jdbcType=VARCHAR}, 
+      #{page,jdbcType=VARCHAR}, #{hasOriginalDoc,jdbcType=TINYINT}, #{conference,jdbcType=VARCHAR}, 
+      #{conferenceDate,jdbcType=VARCHAR}, #{conferenceLocus,jdbcType=VARCHAR}, #{convener,jdbcType=VARCHAR}, 
+      #{authorSubject,jdbcType=VARCHAR}, #{degree,jdbcType=VARCHAR}, #{teacherName,jdbcType=VARCHAR}, 
+      #{types,jdbcType=VARCHAR}, #{downloadUrl,jdbcType=VARCHAR}, #{downloadCount,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{managerId,jdbcType=INTEGER}, #{operateTime,jdbcType=TIMESTAMP}, 
+      #{spare1,jdbcType=VARCHAR}, #{spare2,jdbcType=VARCHAR}, #{spare3,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hrsb.cg.model.Literature" useGeneratedKeys="true" keyProperty="id">
+    insert into hd_literature
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="articleId != null" >
+        article_id,
+      </if>
+      <if test="image != null" >
+        image,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="abstracts != null" >
+        abstracts,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="organization != null" >
+        organization,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
+      <if test="year != null" >
+        year,
+      </if>
+      <if test="volume != null" >
+        volume,
+      </if>
+      <if test="issue != null" >
+        issue,
+      </if>
+      <if test="keywords != null" >
+        keywords,
+      </if>
+      <if test="page != null" >
+        page,
+      </if>
+      <if test="hasOriginalDoc != null" >
+        has_original_doc,
+      </if>
+      <if test="conference != null" >
+        conference,
+      </if>
+      <if test="conferenceDate != null" >
+        conference_date,
+      </if>
+      <if test="conferenceLocus != null" >
+        conference_locus,
+      </if>
+      <if test="convener != null" >
+        convener,
+      </if>
+      <if test="authorSubject != null" >
+        author_subject,
+      </if>
+      <if test="degree != null" >
+        degree,
+      </if>
+      <if test="teacherName != null" >
+        teacher_name,
+      </if>
+      <if test="types != null" >
+        types,
+      </if>
+      <if test="downloadUrl != null" >
+        download_url,
+      </if>
+      <if test="downloadCount != null" >
+        download_count,
+      </if>
+      <if test="clickCount != null" >
+        click_count,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="managerId != null" >
+        manager_id,
+      </if>
+      <if test="operateTime != null" >
+        operate_time,
+      </if>
+      <if test="spare1 != null" >
+        spare1,
+      </if>
+      <if test="spare2 != null" >
+        spare2,
+      </if>
+      <if test="spare3 != null" >
+        spare3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=BIGINT},
+      <if test="articleId != null" >
+        #{articleId,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null" >
+        #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="abstracts != null" >
+        #{abstracts,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="organization != null" >
+        #{organization,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="source != null" >
+        #{source,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="year != null" >
+        #{year,jdbcType=INTEGER},
+      </if>
+      <if test="volume != null" >
+        #{volume,jdbcType=VARCHAR},
+      </if>
+      <if test="issue != null" >
+        #{issue,jdbcType=VARCHAR},
+      </if>
+      <if test="keywords != null" >
+        #{keywords,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="page != null" >
+        #{page,jdbcType=VARCHAR},
+      </if>
+      <if test="hasOriginalDoc != null" >
+        #{hasOriginalDoc,jdbcType=TINYINT},
+      </if>
+      <if test="conference != null" >
+        #{conference,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="conferenceDate != null" >
+        #{conferenceDate,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="conferenceLocus != null" >
+        #{conferenceLocus,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="convener != null" >
+        #{convener,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="authorSubject != null" >
+        #{authorSubject,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="degree != null" >
+        #{degree,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="teacherName != null" >
+        #{teacherName,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="types != null" >
+        #{types,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadUrl != null" >
+        #{downloadUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadCount != null" >
+        #{downloadCount,jdbcType=INTEGER},
+      </if>
+      <if test="clickCount != null" >
+        #{clickCount,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="managerId != null" >
+        #{managerId,jdbcType=INTEGER},
+      </if>
+      <if test="operateTime != null" >
+        #{operateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="spare1 != null" >
+        #{spare1,jdbcType=VARCHAR},
+      </if>
+      <if test="spare2 != null" >
+        #{spare2,jdbcType=VARCHAR},
+      </if>
+      <if test="spare3 != null" >
+        #{spare3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hrsb.cg.model.Literature" >
+    update hd_literature
+    <set >
+      <if test="articleId != null" >
+        article_id = #{articleId,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null" >
+        image = #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="abstracts != null" >
+        abstracts = #{abstracts,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="organization != null" >
+        organization = #{organization,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="source != null" >
+        source = #{source,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="year != null" >
+        year = #{year,jdbcType=INTEGER},
+      </if>
+      <if test="volume != null" >
+        volume = #{volume,jdbcType=VARCHAR},
+      </if>
+      <if test="issue != null" >
+        issue = #{issue,jdbcType=VARCHAR},
+      </if>
+      <if test="keywords != null" >
+        keywords = #{keywords,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="page != null" >
+        page = #{page,jdbcType=VARCHAR},
+      </if>
+      <if test="hasOriginalDoc != null" >
+        has_original_doc = #{hasOriginalDoc,jdbcType=TINYINT},
+      </if>
+      <if test="conference != null" >
+        conference = #{conference,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="conferenceDate != null" >
+        conference_date = #{conferenceDate,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="conferenceLocus != null" >
+        conference_locus = #{conferenceLocus,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="convener != null" >
+        convener = #{convener,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="authorSubject != null" >
+        author_subject = #{authorSubject,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="degree != null" >
+        degree = #{degree,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="teacherName != null" >
+        teacher_name = #{teacherName,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="types != null" >
+        types = #{types,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadUrl != null" >
+        download_url = #{downloadUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadCount != null" >
+        download_count = #{downloadCount,jdbcType=INTEGER},
+      </if>
+      <if test="clickCount != null" >
+        click_count = #{clickCount,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="managerId != null" >
+        manager_id = #{managerId,jdbcType=INTEGER},
+      </if>
+      <if test="operateTime != null" >
+        operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="spare1 != null" >
+        spare1 = #{spare1,jdbcType=VARCHAR},
+      </if>
+      <if test="spare2 != null" >
+        spare2 = #{spare2,jdbcType=VARCHAR},
+      </if>
+      <if test="spare3 != null" >
+        spare3 = #{spare3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hrsb.cg.model.Literature" >
+    update hd_literature
+    set article_id = #{articleId,jdbcType=VARCHAR},
+      image = #{image,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      abstracts = #{abstracts,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      organization = #{organization,jdbcType=VARCHAR},
+      source = #{source,jdbcType=VARCHAR},
+      year = #{year,jdbcType=INTEGER},
+      volume = #{volume,jdbcType=VARCHAR},
+      issue = #{issue,jdbcType=VARCHAR},
+      keywords = #{keywords,jdbcType=VARCHAR},
+      page = #{page,jdbcType=VARCHAR},
+      has_original_doc = #{hasOriginalDoc,jdbcType=TINYINT},
+      conference = #{conference,jdbcType=VARCHAR},
+      conference_date = #{conferenceDate,jdbcType=VARCHAR},
+      conference_locus = #{conferenceLocus,jdbcType=VARCHAR},
+      convener = #{convener,jdbcType=VARCHAR},
+      author_subject = #{authorSubject,jdbcType=VARCHAR},
+      degree = #{degree,jdbcType=VARCHAR},
+      teacher_name = #{teacherName,jdbcType=VARCHAR},
+      types = #{types,jdbcType=VARCHAR},
+      download_url = #{downloadUrl,jdbcType=VARCHAR},
+      download_count = #{downloadCount,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      manager_id = #{managerId,jdbcType=INTEGER},
+      operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      spare1 = #{spare1,jdbcType=VARCHAR},
+      spare2 = #{spare2,jdbcType=VARCHAR},
+      spare3 = #{spare3,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <update id="updateClickCount" parameterType="com.hrsb.cg.model.Literature">
+  	update hd_literature set click_count = #{clickCount} where id = #{id}
+  </update>
+  
+  <update id="updateDownloadCount" parameterType="com.hrsb.cg.model.Literature">
+  	update hd_literature set download_count = #{downloadCount} where id = #{id}
+  </update>
+</mapper>

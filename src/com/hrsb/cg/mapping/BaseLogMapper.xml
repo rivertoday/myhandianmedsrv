@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hrsb.cg.dao.BaseLogMapper" >
+  <resultMap id="BaseResultMap" type="com.hrsb.cg.model.BaseLog" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="operatime" property="operatime" jdbcType="TIMESTAMP" />
+    <result column="opreatype" property="opreatype" jdbcType="VARCHAR" />
+    <result column="target" property="target" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, operator, operatime, opreatype, target, content, status, type
+  </sql>
+  <select id="getAll" resultMap="BaseResultMap" parameterType="java.util.List">
+  	select <include refid="Base_Column_List" /> from baselogs where id in<foreach collection="list" item="id" open="(" separator="," close=")">#{id}</foreach>
+  	order by operatime desc
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from baselogs
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectLogsByPage" resultMap="BaseResultMap" parameterType="com.hrsb.cg.util.Page">
+  	select 
+    <include refid="Base_Column_List" />
+    from baselogs
+    <where>
+    	<if test="params.operator != null and params.opreatype != ''">
+    		and operator like CONCAT('%',#{params.operator,jdbcType=VARCHAR},'')
+    	</if>
+    	<if test="params.opreatype !=null and params.opreatype != ''">
+    		and operatype like  CONCAT('%',#{params.operatype,jdbcType=VARCHAR},'')
+    	</if>
+    	<if test="params.target != null and params.target != ''">
+    		and target like CONCAT('%',#{params.target,jdbcType=VARCHAR},'')
+    	</if>
+    	<if test="params.type != null">
+    		and type = #{params.type,jdbcType=INTEGER}
+    	</if>
+    	<if test="params.starttime != null and params.starttime != ''  and params.endtime != '' and params.endtime != null">
+    		and operatime between #{params.starttime} and #{params.endtime}
+    	</if>
+    </where>
+    order by operatime desc
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from baselogs
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hrsb.cg.model.BaseLog" useGeneratedKeys="true" keyProperty="id">
+    insert into baselogs (id, operator, operatime, 
+      opreatype, target, content, 
+      status, type)
+    values (#{id,jdbcType=INTEGER}, #{operator,jdbcType=VARCHAR}, #{operatime,jdbcType=TIMESTAMP}, 
+      #{opreatype,jdbcType=VARCHAR}, #{target,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{type,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hrsb.cg.model.BaseLog" keyProperty="id" useGeneratedKeys="true">
+    insert into baselogs
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="operator != null" >
+        operator,
+      </if>
+      <if test="operatime != null" >
+        operatime,
+      </if>
+      <if test="opreatype != null" >
+        opreatype,
+      </if>
+      <if test="target != null" >
+        target,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=INTEGER},
+      <if test="operator != null" >
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="operatime != null" >
+        #{operatime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="opreatype != null" >
+        #{opreatype,jdbcType=VARCHAR},
+      </if>
+      <if test="target != null" >
+        #{target,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hrsb.cg.model.BaseLog" >
+    update baselogs
+    <set >
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="operatime != null" >
+        operatime = #{operatime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="opreatype != null" >
+        opreatype = #{opreatype,jdbcType=VARCHAR},
+      </if>
+      <if test="target != null" >
+        target = #{target,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hrsb.cg.model.BaseLog" >
+    update baselogs
+    set operator = #{operator,jdbcType=VARCHAR},
+      operatime = #{operatime,jdbcType=TIMESTAMP},
+      opreatype = #{opreatype,jdbcType=VARCHAR},
+      target = #{target,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

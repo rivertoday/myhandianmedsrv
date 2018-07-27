@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hrsb.cg.dao.MingCiMapper" >
+  <resultMap id="BaseResultMap" type="com.hrsb.cg.model.MingCi" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="category" property="category" jdbcType="VARCHAR" />
+    <result column="term" property="term" jdbcType="VARCHAR" />
+    <result column="spec1" property="spec1" jdbcType="VARCHAR" />
+    <result column="spec2" property="spec2" jdbcType="VARCHAR" />
+    <result column="spec3" property="spec3" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.hrsb.cg.model.MingCi" extends="BaseResultMap" >
+    <result column="introduction" property="introduction" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, category, term, spec1, spec2, spec3
+  </sql>
+  <sql id="Blob_Column_List" >
+    introduction
+  </sql>
+  
+  <!-- <select id="selectAllPinYin" resultMap="BaseResultMap">
+  select distinct(category) from hd_zhongguoyaodian order by category asc;    
+  </select> -->
+  
+  <select id="selectByCategory" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  select 
+    <include refid="Base_Column_List" />
+    from hd_mingcidaquan where  
+    	upper(category) = #{cate,jdbcType=VARCHAR} order by term
+  </select>
+  
+  <select id="selectMingCi" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+  select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from hd_mingcidaquan where id = #{mingciid,jdbcType=BIGINT}    
+  </select>
+  
+  <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  select 
+    <include refid="Base_Column_List" />
+    from hd_mingcidaquan where (spec3 is null or spec3='') and 
+    	term like concat('%',#{mckey,jdbcType=VARCHAR},'%')  order by category
+  </select>
+  
+  <select id="selectByPage" resultMap="ResultMapWithBLOBs" parameterType="com.hrsb.cg.util.Page">
+  select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from hd_mingcidaquan where (spec3 is null or spec3='')  
+    <if test="params.title!=null and params.title!='' ">
+    	and term like concat('%','${params.title}','%') 
+    </if>
+    order by category
+    
+  </select>
+  
+  <insert id="insertSelective" parameterType="com.hrsb.cg.model.MingCi" keyProperty="id" useGeneratedKeys="true">
+    insert into hd_mingcidaquan
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="term != null" >
+        term,
+      </if>
+      <if test="introduction != null" >
+        introduction,
+      </if>
+      <if test="category != null" >
+        category,
+      </if>
+      <if test="spec1 != null" >
+        spec1,
+      </if>
+      <if test="spec2 != null" >
+        spec2,
+      </if>
+      <if test="spec3 != null" >
+        spec3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=BIGINT},
+      <if test="term != null" >
+        #{term,jdbcType=VARCHAR},
+      </if>
+      <if test="introduction != null" >
+        #{introduction,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="category != null" >
+        #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="spec1 != null" >
+        #{spec1,jdbcType=VARCHAR},
+      </if>
+      <if test="spec2 != null" >
+        #{spec2,jdbcType=VARCHAR},
+      </if>
+      <if test="spec3 != null" >
+        #{spec3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hrsb.cg.model.MingCi" >
+    update hd_mingcidaquan
+    <set >
+      <if test="term != null" >
+        term = #{term,jdbcType=VARCHAR},
+      </if>
+      <if test="introduction != null" >
+        introduction = #{introduction,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="category != null" >
+        category = #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="spec1 != null" >
+        spec1 = #{spec1,jdbcType=VARCHAR},
+      </if>
+      <if test="spec2 != null" >
+        spec2 = #{spec2,jdbcType=VARCHAR},
+      </if>
+      <if test="spec3 != null" >
+        spec3 = #{spec3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <update id="delLogic"  parameterType="java.lang.Long">
+  update hd_mingcidaquan set spec3 = '1' where id = #{mingciId}
+  </update>
+ 
+</mapper>

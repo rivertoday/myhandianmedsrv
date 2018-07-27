@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hrsb.cg.dao.SubjectResultMapper" >
+  <resultMap id="BaseResultMap" type="com.hrsb.cg.model.SubjectResult" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="subject_id" property="subjectId" jdbcType="BIGINT" />
+    <result column="question_id" property="questionId" jdbcType="BIGINT" />
+    <result column="is_correct" property="isCorrect" jdbcType="TINYINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="score_small" property="scoreSmall" jdbcType="INTEGER" />
+    <result column="score_big" property="scoreBig" jdbcType="INTEGER" />
+    <result column="manager_id" property="managerId" jdbcType="INTEGER" />
+    <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP" />
+    <result column="spare1" property="spare1" jdbcType="VARCHAR" />
+    <result column="spare2" property="spare2" jdbcType="VARCHAR" />
+    <result column="spare3" property="spare3" jdbcType="VARCHAR" />
+    <result column="instruction" property="instruction" jdbcType="LONGVARCHAR" />
+    <result column="suggestion" property="suggestion" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, subject_id, question_id, is_correct, name, score_small, score_big, manager_id, 
+    operate_time, spare1, spare2, spare3, instruction, suggestion
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from hd_subject_result
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="com.hrsb.cg.util.Page" >
+    select 
+    <include refid="Base_Column_List" />
+    from hd_subject_result
+    <where>
+    	<if test="params.subjectId != null and params.subjectId != 0">
+    		and subject_id = #{params.subjectId}
+    	</if>
+    	<if test="params.questionId != null and params.questionId != 0">
+    		and question_id = #{params.questionId}
+    	</if>
+    </where>
+  </select>
+  
+  <select id="selectBySubjectIdBetweenScore" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hd_subject_result
+    where subject_id = #{0} and #{1} >= score_small and #{1} &lt;= score_big 
+  </select>
+  
+  <select id="selectBySubjectIdAndIsCorrect" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hd_subject_result
+    where subject_id = #{0} and is_correct = #{1}
+  </select>
+  
+  <select id="selectBySubjectIdAndQuestionId" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hd_subject_result
+    where subject_id = #{0} and question_id = #{1}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from hd_subject_result
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <insert id="insertSelective" parameterType="com.hrsb.cg.model.SubjectResult" useGeneratedKeys="true" keyProperty="id">
+    insert into hd_subject_result
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="subjectId != null" >
+        subject_id,
+      </if>
+      <if test="questionId != null" >
+        question_id,
+      </if>
+      <if test="isCorrect != null" >
+        is_correct,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="scoreSmall != null" >
+        score_small,
+      </if>
+      <if test="scoreBig != null" >
+        score_big,
+      </if>
+      <if test="managerId != null" >
+        manager_id,
+      </if>
+      <if test="operateTime != null" >
+        operate_time,
+      </if>
+      <if test="spare1 != null" >
+        spare1,
+      </if>
+      <if test="spare2 != null" >
+        spare2,
+      </if>
+      <if test="spare3 != null" >
+        spare3,
+      </if>
+      <if test="instruction != null" >
+        instruction,
+      </if>
+      <if test="suggestion != null" >
+        suggestion,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=BIGINT},
+      <if test="subjectId != null" >
+        #{subjectId,jdbcType=BIGINT},
+      </if>
+      <if test="questionId != null" >
+        #{questionId,jdbcType=BIGINT},
+      </if>
+      <if test="isCorrect != null" >
+        #{isCorrect,jdbcType=TINYINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="scoreSmall != null" >
+        #{scoreSmall,jdbcType=INTEGER},
+      </if>
+      <if test="scoreBig != null" >
+        #{scoreBig,jdbcType=INTEGER},
+      </if>
+      <if test="managerId != null" >
+        #{managerId,jdbcType=INTEGER},
+      </if>
+      <if test="operateTime != null" >
+        #{operateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="spare1 != null" >
+        #{spare1,jdbcType=VARCHAR},
+      </if>
+      <if test="spare2 != null" >
+        #{spare2,jdbcType=VARCHAR},
+      </if>
+      <if test="spare3 != null" >
+        #{spare3,jdbcType=VARCHAR},
+      </if>
+      <if test="instruction != null" >
+        #{instruction,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="suggestion != null" >
+        #{suggestion,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.hrsb.cg.model.SubjectResult" >
+    update hd_subject_result
+    <set >
+      <if test="subjectId != null" >
+        subject_id = #{subjectId,jdbcType=BIGINT},
+      </if>
+      <if test="questionId != null" >
+        question_id = #{questionId,jdbcType=BIGINT},
+      </if>
+      <if test="isCorrect != null" >
+        is_correct = #{isCorrect,jdbcType=TINYINT},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="scoreSmall != null" >
+        score_small = #{scoreSmall,jdbcType=INTEGER},
+      </if>
+      <if test="scoreBig != null" >
+        score_big = #{scoreBig,jdbcType=INTEGER},
+      </if>
+      <if test="managerId != null" >
+        manager_id = #{managerId,jdbcType=INTEGER},
+      </if>
+      <if test="operateTime != null" >
+        operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="spare1 != null" >
+        spare1 = #{spare1,jdbcType=VARCHAR},
+      </if>
+      <if test="spare2 != null" >
+        spare2 = #{spare2,jdbcType=VARCHAR},
+      </if>
+      <if test="spare3 != null" >
+        spare3 = #{spare3,jdbcType=VARCHAR},
+      </if>
+      <if test="instruction != null" >
+        instruction = #{instruction,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="suggestion != null" >
+        suggestion = #{suggestion,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
