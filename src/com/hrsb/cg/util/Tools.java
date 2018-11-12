@@ -723,12 +723,25 @@ public class Tools {
 			temp += URLEncoder.encode("Creator=" + params.get("creator") + " and ", "UTF-8");
 		}
 		
+		//Added by JIANG He at 20181112
+		if (!StringUtils.isEmpty((String) params.get("abstracts"))) {
+			temp += URLEncoder.encode("Abstract=" + params.get("abstracts") + " and ", "UTF-8");
+		}
+		//Added End
+		
 		if (!StringUtils.isEmpty((String) params.get("yearSmall")) && 
 				!StringUtils.isEmpty((String) params.get("yearBig"))) {
 			temp += URLEncoder.encode("Date within \"" + params.get("yearSmall") + " " + params.get("yearBig") + "\" and ", "UTF-8");
 		}
 		
-		temp += "DBID=WF_QK";
+		//Modified by JIANG He at 20181109
+		if (!StringUtils.isEmpty((String) params.get("sType"))) {
+			temp += URLEncoder.encode("DBID=" + params.get("sType"), "UTF-8");
+		}else {
+			temp += "DBID=WF_QK";
+		}
+		//Modifed End
+		
 		return Const.WF_SEARCH + url + temp;
 	}
 	

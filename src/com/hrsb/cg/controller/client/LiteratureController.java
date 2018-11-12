@@ -190,6 +190,7 @@ public class LiteratureController extends BaseController {
 			@RequestParam(required = false) String keywords, @RequestParam(required = false) String abstracts, 
 			@RequestParam(required = false) String yearSmall,@RequestParam(required = false) String monthSmall,
 			@RequestParam(required = false) String yearBig, @RequestParam(required = false) String monthBig,
+			@RequestParam(required = false) String sType, 
 			@RequestParam(defaultValue = "1") int pageNo, 
 			@RequestParam(defaultValue = Const.PAGESIZE) int pageSize, 
 			ModelMap modelMap,HttpServletRequest request) throws Exception {
@@ -197,6 +198,9 @@ public class LiteratureController extends BaseController {
 		params.put("title", title);
 		params.put("creator", creator);
 		params.put("keywords", keywords);
+		//Added by JIANG He at 20181112
+		params.put("sType", sType);
+		//Added End
 		params.put("abstracts", abstracts);
 		if(StringUtils.isNotEmpty(yearSmall) && StringUtils.isNotEmpty(monthSmall)){
 			params.put("yearSmall", yearSmall+"-"+monthSmall);

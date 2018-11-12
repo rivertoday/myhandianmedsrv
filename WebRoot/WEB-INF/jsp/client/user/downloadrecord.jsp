@@ -61,7 +61,7 @@
 			                        <div class="f_sc_time">
 			                        	<span>时间：${rs.literature.year }</span>
 			                        	<span style=" float:right;">
-			                        		<a id="dld${rs.id }" <c:if test="${rs.isDownload == 0 }">onclick="upstatus(${rs.id });"</c:if> style="margin-right:10px;" target="_blank" href="${rs.literature.Spare1 }">
+			                        		<a id="dld${rs.id }" <c:if test="${rs.isDownload == 0 }">onclick="upstatus(${rs.id });"</c:if> style="margin-right:10px;" target="_blank" href="${rs.literature.spare1 }">
 			                        			<img src="/client/images/f_wxq022.png" />
 			                        			<c:if test="${rs.isDownload == 1 }">已下载</c:if>
 			                        			<c:if test="${rs.isDownload == 0 }">下载</c:if>

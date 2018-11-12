@@ -154,18 +154,43 @@ public class ManageLiteratureController {
 		ModelAndView mv = new ModelAndView(
 				"/manage/literature/literature-search");
 		String title = request.getParameter("title");
+		//Modified by JIANG He at 20181109
+		String keywords = request.getParameter("keywords");
+		String creator = request.getParameter("creator");
+		String yearSmall = request.getParameter("yearSmall");
+		String yearBig = request.getParameter("yearBig");
+		String sType = request.getParameter("sType");
 
-		if (title == null) {
+		if ((title == null) && (keywords == null) && (creator == null) && 
+			(yearSmall == null) && (yearBig == null)) {
 			Page<Literature> page = new Page<Literature>(
 					null == pageCurrent ? 1 : pageCurrent,
 					null == pageSize ? 30 : pageSize);
 			mv.addObject("page", page);
 			return mv;
 		}
+		//Modified End
 
 		try {
 			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("title", title);
+			if (title != null) {
+				params.put("title", title);
+			}
+			//Modified by JIANG He at 20181109
+			if (keywords != null) {
+				params.put("keywords", keywords);
+			}
+			if (creator != null) {
+				params.put("creator", creator);
+			}
+			if ((yearSmall != null) && (yearBig != null)) {
+				params.put("yearSmall", yearSmall);
+				params.put("yearBig", yearBig);
+			}
+			if (sType != null) {
+				params.put("sType", sType);
+			}
+			//Modified End
 
 			// 检索调用万方文献接口查询数据
 			String url = Tools.getWanFangSearchUrl(params,
@@ -323,7 +348,8 @@ public class ManageLiteratureController {
 					literature.setDegree((String) resultMap.get("Degree"));
 					literature
 							.setTeacherName((String) resultMap.get("TeacherName"));
-					literature.setTypes("WF_QK");
+					literature.setTypes((String) resultMap
+							.get("DBID"));// Modified by JIANG He at 20181109
 					literature.setDownloadCount(0);
 					literature.setClickCount(1);
 					literature.setCreateTime(new Date());
@@ -335,9 +361,9 @@ public class ManageLiteratureController {
 					literature.setHasOriginalDoc(hasOriginalDoc.byteValue());
 				}
 				
-				url = Const.WF_DOWNLOAD + "&articleId=" + articleId + "&type=WF_QK&sign=" + Tools.getSign();
+				url = Const.WF_DOWNLOAD + "&articleId=" + articleId + "&type=" + literature.getTypes() + "&sign=" + Tools.getSign();//Modified by JIANG He at 20181109
 				fileUrl = Tools.downloadFile(url, request);
-				//literature.setDownloadUrl(fileUrl);
+				literature.setDownloadUrl(fileUrl);
 				literature.setSpare1(fileUrl);
 				
 				literatureMapper.insertSelective(literature);

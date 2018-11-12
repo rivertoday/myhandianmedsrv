@@ -86,9 +86,9 @@
             	<form id="myform" method="post">
                 	<span>标题中包含：</span><input type="text" name="title" id="title" value="${page.params.title }" />
                     <span>作者中包含：</span><input style=" margin-right:0px;" type="text" name="creator" value="${page.params.creator }" />
-                    <span>关键词中包含：</span><input type="text" name="keywords" value="${page.params.keywords }" />
+                    <span>关键词中包含：</span><input type="text" name="keywords" value="${page.params.keywords }" />                    
                     <span>摘要中包含：</span><input style=" margin-right:0px;" type="text" name="abstracts" value="${page.params.abstracts }" />
-                    <span style="margin-top:0;">出版日期：</span>
+                    <span style="margin-top:0;margin-left:0px;">出版日期：</span>
                     <div>
 					<select name="yearSmall" id="yearSmall" style="width: 86px;"  class="yselect xuanxiang1" >
                         	<c:forEach items="${year2 }" var="y2">
@@ -114,6 +114,12 @@
 		                	</c:forEach>
                         </select>
 					<!--<input style="width: 130px;" type="text" name="yearBig" id="yearBig" class="tcal" value="${page.params.yearBig }" />--></div>
+                    <span>类型 ：</span> <select style="margin-right:0px;" class="yselect xuanxiang1" name="sType" value="${page.params.sType}" 
+						data-toggle="selectpicker" >
+							<option value="WF_QK">期刊</option>
+							<option value="WF_HY">会议</option>
+							<option value="WF_XW">学位</option>
+					</select>
                     <span style="font-size:12px; width:164px; color:#f7bb37; padding-top:8px;">*此日期以在线出版日期为准</span>
                     <input type="button" name="" id="tij" style="cursor: pointer;" value="开始检索" />
                 </form>

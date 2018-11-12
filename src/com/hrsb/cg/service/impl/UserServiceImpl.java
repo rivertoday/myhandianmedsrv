@@ -144,7 +144,14 @@ public class UserServiceImpl implements UserService{
 			
 			//修改界面前端将省的代码转换成了名称，所以这里保存的时候需要重新将名称转换成代码
 			AreaProv areaProv=areaProvMapper.getByProvName(userDetail.getProvince());
-			userDetail.setProvince(areaProv.getProvCode());				
+			userDetail.setProvince(areaProv.getProvCode());		
+			
+			//根据资料完善程度来修改是否支持无限下载
+			if (userDetail.getStatus() == 3) {
+				userDetail.setDownloadTypes(new Byte("1"));//无限下载
+			}else {
+				userDetail.setDownloadTypes(new Byte("0"));//无限下载
+			}
 			
 			i=userDetailMapper.updateByPrimaryKeySelective(userDetail);
 		}
