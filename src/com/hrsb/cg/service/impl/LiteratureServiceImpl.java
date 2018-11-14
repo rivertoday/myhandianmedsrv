@@ -63,7 +63,8 @@ public class LiteratureServiceImpl implements LiteratureService{
 			// 请求万方下载全文接口
 			String url = Const.WF_DOWNLOAD + "&articleId=" + literature.getArticleId() + "&type=" + literature.getTypes() + "&sign=" + Tools.getSign();
 			System.out.println(url);
-			String fileUrl = Tools.downloadFile(url, request);
+			//String fileUrl = Tools.downloadFile(url, request);
+			String fileUrl = Tools.downloadFile(url, literature.getTitle(), request);//Modified by JIANG He at 20181114
 			//String fileUrl = Tools.getBasePath(request) + "/upload/file/20160316115658196256.pdf";
 			//literature.setDownloadUrl(fileUrl);
 			literature.setSpare1(fileUrl);//updated by JIANG at 20180109

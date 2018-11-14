@@ -362,7 +362,8 @@ public class ManageLiteratureController {
 				}
 				
 				url = Const.WF_DOWNLOAD + "&articleId=" + articleId + "&type=" + literature.getTypes() + "&sign=" + Tools.getSign();//Modified by JIANG He at 20181109
-				fileUrl = Tools.downloadFile(url, request);
+				//fileUrl = Tools.downloadFile(url, request);
+				fileUrl = Tools.downloadFile(url, literature.getTitle(), request);// Modified by JIANG He at 20181114
 				literature.setDownloadUrl(fileUrl);
 				literature.setSpare1(fileUrl);
 				

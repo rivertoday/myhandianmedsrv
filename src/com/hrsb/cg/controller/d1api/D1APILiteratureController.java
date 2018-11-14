@@ -361,7 +361,8 @@ public class D1APILiteratureController extends D1APIController {
 					String url = Const.WF_DOWNLOAD + "&articleId=" + literature.getArticleId() + "&type=" + literature.getTypes() + "&sign=" + Tools.getSign();
 					System.out.println(url);
 					JJLogger.info("d1api download interface plan to get wanfan literature: "+url);
-					String fileUrl = Tools.downloadFile(url, request);
+					//String fileUrl = Tools.downloadFile(url, request);//
+					String fileUrl = Tools.downloadFile(url, literature.getTitle(), request);//Modified by JIANG He at 20181114
 					JJLogger.info("d1api download interface got the wanfan literature: "+fileUrl);
 					//literature.setDownloadUrl(fileUrl);
 					literature.setSpare1(fileUrl);//updated by JIANG at 20180109

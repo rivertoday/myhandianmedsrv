@@ -39,6 +39,20 @@ public class FileUtil {
 	}
 	
 	/**
+	 * 获取文件保存后名称
+	 * @param fileName 原名称
+	 * @return
+	 * @throws Exception
+	 */
+	public static String getName(String title, String suffix) throws Exception {
+		Random ran = new Random();
+		//int number = ran.nextInt(1024);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+		String dateTime = sdf.format(new Date());
+		return dateTime + "_" + title + "." + suffix;
+	}
+	
+	/**
 	 * 取后缀
 	 * @param fileName 原始文件名称
 	 * @return 后缀

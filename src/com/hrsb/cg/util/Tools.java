@@ -800,6 +800,62 @@ public class Tools {
 	} 
 	
 	/**
+	 * 万方全文保存到本地 
+	 * Modifed by JIANG He at 20181114
+	 * @param fileUrl
+	 * @param filePath
+	 * @throws Exception 
+	 */
+	public static String downloadFile(String urlPath, String title, HttpServletRequest request) { 
+		String fileUrl = "";
+		InputStream in = null;
+		FileOutputStream os = null;
+		
+		try {
+			String str = request.getSession().getServletContext().getRealPath("upload/file/");
+			//String name = FileUtil.getName("wf.pdf");
+			String name = FileUtil.getName(title, "pdf");//Modified by JIANG He at 20181114
+			fileUrl = new StringBuilder(str + "/").append(name).toString();
+			URL url = new URL(urlPath);   
+			URLConnection  connection = url.openConnection();
+			in = connection.getInputStream();  
+			os = new FileOutputStream(fileUrl); 
+			byte[] buffer = new byte[4 * 1024];  
+			int read;  
+			  
+			while ((read = in.read(buffer)) > 0) {  
+				os.write(buffer, 0, read);  
+			}  
+			   
+			fileUrl = getBasePath(request) + "/upload/file/" + name;
+			os.close();  
+			in.close();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			JJLogger.info(e.toString());
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			JJLogger.info(e.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+			JJLogger.info(e.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+			JJLogger.info(e.toString());
+		} finally {
+			try {
+				os.close();
+				in.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+				JJLogger.info(e.toString());
+			}  
+		}
+		
+		return fileUrl;
+	} 
+	
+	/**
 	 * 万方sign
 	 * @return
 	 * @throws Exception 
