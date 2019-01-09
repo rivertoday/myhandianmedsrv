@@ -29,5 +29,5 @@
             </script>
             <a style=" color:#fff;" href="/about.html">关于我们</a>
             <a style=" color:#fff;" href="/secret.html">隐私及服务条款</a>
-            <a style=" color:#fff;" href="http://www.risenb.com" target="_blank">技术支持：鸿睿思博</a>
+            <a style=" color:#fff;" href="http://www.handianmedicine.com" target="_blank">技术支持：汉典医谷</a>
     </div>
