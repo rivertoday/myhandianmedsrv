@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -22,6 +23,7 @@ import com.hrsb.cg.model.ProductLiterature;
 import com.hrsb.cg.model.ProductQuestion;
 import com.hrsb.cg.util.JsonUtil;
 import com.hrsb.cg.util.Page;
+import com.hrsb.cg.util.Const;
 
 /**
  * 汉典产品控制类
@@ -207,19 +209,35 @@ public class D1APIProductController extends D1APIController {
 	//@D1apiAuth
 	@RequestMapping(value = "/literature.json")
 	@ResponseBody
-	public Map<String, Object> literature(@RequestParam long id) {
-		Map<String, Object> mymap = new HashMap<String, Object>();
+	public Map<String, Object> literature(@RequestParam(value="pageCurrent",defaultValue="1") Integer pageCurrent,@RequestParam(value="pageSize",defaultValue="15") Integer pageSize,@RequestParam long id) {
+		
+		Map<String, Object> params=new HashMap<String, Object>();
 		ModelMap modelMap = new ModelMap();
-
+		Map<String, Object> mymap = new HashMap<String, Object>();
+		
+		Page<ProductLiterature> page=new Page<ProductLiterature>(pageCurrent, pageSize);
+		
 		List<ProductLiterature> productLiteratures = null;
 		try {
 			if (id>0) {
-				productLiteratures = productService.getLiteratureByProductId(id);
+				//productLiteratures = productService.getLiteratureByProductId(id);				
+				params.put("productId", id);
+				
+				page.setParams(params);
+				page.setOrderDirection("desc");
+				page.setOrderField("operate_time");
+				productLiteratures=productService.selectAPIProductLiteratureByPage(page);				
+				
 			}else {
-				productLiteratures = productLiteratureService.getAll();
+				page.setOrderDirection("desc");
+				page.setOrderField("operate_time");
+				//productLiteratures = productLiteratureService.getAll();
+				productLiteratures=productService.selectAPIProductLiteratureByPage(page);	
 			}
-
-			modelMap.put("literature", productLiteratures);
+			
+			page.setResults(productLiteratures);		
+			
+			modelMap.put("page", page);
 			mymap.put("success", "1");
 			mymap.put("data", modelMap);
 		} catch (Exception ex) {

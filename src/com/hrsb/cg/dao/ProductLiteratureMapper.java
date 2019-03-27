@@ -23,6 +23,9 @@ public interface ProductLiteratureMapper {
 
 	List<ProductLiterature> selectProductLiteratureByPage(
 			Page<ProductLiterature> page);
+	
+	List<ProductLiterature> selectAPIProductLiteratureByPage(
+			Page<ProductLiterature> page);//Added by JIANG He at 20190327
 
 	List<ProductLiterature> selectByProductId(Long productId);
 	

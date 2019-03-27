@@ -150,6 +150,14 @@ public class ProductServiceImpl implements ProductService {
 		
 		return productLiteratureMapper.selectProductLiteratureByPage(page);
 	}
+	
+	//Added by JIANG He at 20190327
+	@Override
+	public List<ProductLiterature> selectAPIProductLiteratureByPage(
+			Page<ProductLiterature> page) {
+		
+		return productLiteratureMapper.selectAPIProductLiteratureByPage(page);
+	}
 
 	@Override
 	public ProductLiterature selectByProductLiteratureId(

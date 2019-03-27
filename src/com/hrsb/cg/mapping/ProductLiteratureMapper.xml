@@ -273,6 +273,20 @@
     </if>
   </select>
   
+  <select id="selectAPIProductLiteratureByPage" parameterType="com.hrsb.cg.util.Page" resultMap="ResultMapWithBLOBs">
+  	select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from hd_product_literature where state=1
+    <if test="params.productId!=null and params.productId!='' ">
+    and product_id = #{params.productId}
+    </if>
+    <if test="params.title!=null and params.title!='' ">
+    and title = #{params.title}
+    </if>
+  </select>
+  
   <select id="selectAll" resultMap="ResultMapWithBLOBs">
   	select 
     <include refid="Base_Column_List" />

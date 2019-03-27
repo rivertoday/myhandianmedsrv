@@ -26,6 +26,8 @@ public class Const {
 	public final static int SESSMINUTE = 60;
 	// 每页显示条数
 	public static final String PAGESIZE = "10";
+	// 每页显示条数
+	public static final int APIPAGESIZE = 10;
 	// 可以下载次数
 	public static final int DOWNLOADCOUNT = 5;
 	// 万方用户名
