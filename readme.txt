@@ -5,6 +5,13 @@ Window——>Preferences
 MyEclipse——>Servers——>Tomcat
 将Integrated Sandbox里面的几个服务disable
 
+tomcat服务器的conf/server.xml文件需增加对UTF8的url支持（最后一行）
+<Connector executor="tomcatThreadPool"
+               port="8080" protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               redirectPort="8443"
+               URIEncoding="UTF-8"/>   
+
 3.该项目需要部署到ROOT下，
 选中工程，右键-->Properties-->Myeclipse-->Project Factes——>Web；
 可以看到选项列表，

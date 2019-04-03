@@ -209,7 +209,9 @@ public class D1APIProductController extends D1APIController {
 	//@D1apiAuth
 	@RequestMapping(value = "/literature.json")
 	@ResponseBody
-	public Map<String, Object> literature(@RequestParam(value="pageCurrent",defaultValue="1") Integer pageCurrent,@RequestParam(value="pageSize",defaultValue="15") Integer pageSize,@RequestParam long id) {
+	public Map<String, Object> literature(@RequestParam(value="pageCurrent",defaultValue="1") Integer pageCurrent,
+			@RequestParam(value="pageSize",defaultValue="10") Integer pageSize,
+			@RequestParam long id, @RequestParam(value="title",defaultValue="") String title) {
 		
 		Map<String, Object> params=new HashMap<String, Object>();
 		ModelMap modelMap = new ModelMap();
@@ -222,6 +224,9 @@ public class D1APIProductController extends D1APIController {
 			if (id>0) {
 				//productLiteratures = productService.getLiteratureByProductId(id);				
 				params.put("productId", id);
+				if (title!=null && title!=""){
+					params.put("title", "%"+title+"%");
+				}
 				
 				page.setParams(params);
 				page.setOrderDirection("desc");
@@ -229,6 +234,10 @@ public class D1APIProductController extends D1APIController {
 				productLiteratures=productService.selectAPIProductLiteratureByPage(page);				
 				
 			}else {
+				if (title!=null && title!=""){
+					params.put("title", "%"+title+"%");
+				}
+				page.setParams(params);
 				page.setOrderDirection("desc");
 				page.setOrderField("operate_time");
 				//productLiteratures = productLiteratureService.getAll();

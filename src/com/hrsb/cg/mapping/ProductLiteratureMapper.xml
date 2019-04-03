@@ -283,7 +283,7 @@
     and product_id = #{params.productId}
     </if>
     <if test="params.title!=null and params.title!='' ">
-    and title = #{params.title}
+    and title like #{params.title}
     </if>
   </select>
   
