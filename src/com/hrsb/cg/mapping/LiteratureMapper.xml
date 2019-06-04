@@ -52,6 +52,32 @@
     </where>
   </select>
   
+  <select id="selectAdvancedByPage" resultMap="BaseResultMap" parameterType="com.hrsb.cg.util.Page">
+   select 
+    <include refid="Base_Column_List" />
+    from hd_literature
+    <where>
+    	<if test="params.title != null and params.title != ''">
+    		and title like concat("%", #{params.title}, "%")
+    	</if>
+    	<if test="params.creator != null and params.creator != ''">
+    		and creator like concat("%", #{params.creator}, "%")
+    	</if>
+    	<if test="params.keywords != null and params.keywords != ''">
+    		and keywords like concat("%", #{params.keywords}, "%")
+    	</if>
+    	<if test="params.sType != null and params.sType != ''">
+    		and types like concat("%", #{params.sType}, "%")
+    	</if>
+    	<if test="params.abstracts != null and params.abstracts != ''">
+    		and abstracts like concat("%", #{params.abstracts}, "%")
+    	</if>
+    	<if test="params.yS != null and params.yB != null">
+    		and year &gt;= #{params.yS, jdbcType=INTEGER} and year &lt;= #{params.yB, jdbcType=INTEGER}
+    	</if>
+    </where>
+  </select>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />

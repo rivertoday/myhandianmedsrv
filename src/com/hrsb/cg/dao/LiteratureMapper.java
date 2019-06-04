@@ -15,6 +15,8 @@ public interface LiteratureMapper {
     Literature selectByPrimaryKey(Long id);
 
 	List<Literature> selectByPage(Page<Literature> page);
+	
+	List<Literature> selectAdvancedByPage(Page<Literature> page);//added by JIANG at 20190603
 
 	void updateDownloadCount(Literature literature2);
 

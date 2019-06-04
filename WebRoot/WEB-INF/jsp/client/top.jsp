@@ -10,6 +10,6 @@
         		<div style="float:left;padding-right: 10px;" >${userDetail.nickNameStr },<a style="color: black;" href="/logout.html">退出</a></div>
         		<div style="float:left;padding-right: 10px; padding-top: 29px;" ><a href="/user/detail.html"><img src="/client/images/usercenter.png" /></a></div>
         	</c:if>
-        	<div class="right">010-56903305</div>
+        	<div class="right">010-56903361</div>
         </div>
     </div>

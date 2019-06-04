@@ -93,7 +93,12 @@ public class LiteratureController extends BaseController {
 		page.setOrderField("create_time");
 		page.setOrderDirection("desc");
 		List<Literature> literatures = null;
-		// title为空查本地，不为空查万方
+		
+		// Updated by JIANG He at 20190603
+		// 无论title是否为空，都查本地，不查万方
+		literatures = literatureMapper.selectByPage(page); 
+		
+		/*// title为空查本地，不为空查万方
 		if (StringUtils.isEmpty(title)) {
 			literatures = literatureMapper.selectByPage(page); 
 		} else {
@@ -143,7 +148,7 @@ public class LiteratureController extends BaseController {
 				keyword.setStatus((byte) 1);
 				userKeywordMapper.insertSelective(keyword);
 			}
-		}
+		}*/
 		
 		page.setResults(literatures);
 		modelMap.put("page", page);
@@ -197,7 +202,10 @@ public class LiteratureController extends BaseController {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("title", title);
 		params.put("creator", creator);
-		params.put("keywords", keywords);
+		//Updated by JIANG at 20190603, only support one keyword, ignore all the others
+		String [] keywordList = keywords.split("\\s+");		
+		params.put("keywords", keywordList[0]);
+		
 		//Added by JIANG He at 20181112
 		params.put("sType", sType);
 		//Added End
@@ -213,7 +221,18 @@ public class LiteratureController extends BaseController {
 		}else if(StringUtils.isNotEmpty(yearBig)){
 			params.put("yearBig", yearBig);
 		}
-		// 检索调用万方文献接口查询数据
+		
+		Integer yS = Integer.valueOf(yearSmall);
+		Integer yB = Integer.valueOf(yearBig);
+		params.put("yS", yS);
+		params.put("yB", yB);
+		
+		//updated by JIANG at 20190603
+		//use the customed local search
+		Page<Literature> page = new Page<Literature>(pageNo, pageSize).setParams(params);
+		List<Literature> literatures = literatureMapper.selectAdvancedByPage(page); 
+		
+		/*// 检索调用万方文献接口查询数据
 		String url = Tools.getWanFangSearchUrl(params, (pageNo - 1) * pageSize + 1, pageSize);
 		System.out.println(url);
 		String result = webClient.doGet(url);
@@ -247,7 +266,8 @@ public class LiteratureController extends BaseController {
 					literatures.add(literature);
 				}
 			}
-		}
+		}*/
+		
 		page.setResults(literatures);
 		modelMap.put("page", page);
 		modelMap.put("type", 3);

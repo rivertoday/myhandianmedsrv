@@ -210,8 +210,14 @@
 				<!--***-->
 				<!--内容-->
 				<div class="xia clearfix">
-					<div class="saomiao">扫描下载汉典医学APP，苹果手机请自行通过“设置-设备描述”进行信任操作</div>
-					<div class="saomiao">请注意：App用户系统与本网站用户系统非同一系统，需要另行注册登录，谢谢理解！</div>
+					<div class="saomiao">扫描二维码下载安装汉典医学APP也可使用相关文献服务。<br />
+					苹果手机请自行通过“设置-设备描述”进行信任操作<br /></div>
+					<br />
+					<div class="saomiao"><h3>请注意：</h3>
+					App用户系统属于<a href="https://www.handianmedicine.com/">“汉典云课堂”</a> <br/>
+					与本网站用户系统非同一系统，需要另行注册登录，谢谢理解！<br />
+					另外App下载托管服务有期限，下面二维码有效期至2019-07-18，届时会进一步更新。
+					</div>
 					<div class="xl">
 						<div class="clearfix xlp">
 							<table border="0">
